@@ -1,12 +1,4 @@
-﻿  aras.cpp
-C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
-  (compiling source file 'aras.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
-      see declaration of 'std::runtime_error'
-      C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
-      see declaration of 'sf::Exception'
-  
-  guiWindow.cpp
+﻿  guiWindow.cpp
 C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
   (compiling source file 'guiWindow.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
@@ -14,28 +6,21 @@ C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Except
       C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
       see declaration of 'sf::Exception'
   
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,43): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,43): warning C4244:         with
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,43): warning C4244:         [
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,43): warning C4244:             T=float
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,43): warning C4244:         ]
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,34): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,34): warning C4244:         with
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,34): warning C4244:         [
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,34): warning C4244:             T=float
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(141,34): warning C4244:         ]
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,32): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,32): warning C4244:         with
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,32): warning C4244:         [
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,32): warning C4244:             T=float
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,32): warning C4244:         ]
-  main.cpp
-C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
-  (compiling source file 'main.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
-      see declaration of 'std::runtime_error'
-      C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
-      see declaration of 'sf::Exception'
-  
-  Generating Code...
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,43): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,43): warning C4244:         with
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,43): warning C4244:         [
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,43): warning C4244:             T=float
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,43): warning C4244:         ]
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,34): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,34): warning C4244:         with
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,34): warning C4244:         [
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,34): warning C4244:             T=float
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(147,34): warning C4244:         ]
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(154,32): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(154,32): warning C4244:         with
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(154,32): warning C4244:         [
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(154,32): warning C4244:             T=float
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(154,32): warning C4244:         ]
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(160,20): warning C4834: discarding return value of function with [[nodiscard]] attribute
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(164,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   ARAS.vcxproj -> C:\Users\alexi\Documents\ARAS Dev\x64\Debug\ARAS.exe

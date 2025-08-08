@@ -132,16 +132,23 @@ bool GuiMainWindow::createWindow()
 	m_gui.setTarget(m_window);
 	m_hwnd = m_window.getNativeHandle();
 
-	if (!m_font.openFromFile("fonts/arial.ttf")) {
+	if (m_icon.loadFromFile("ressources/images/icon.png")) {
+		//LOG
+	}
+	m_window.setIcon(m_icon);
+
+	if (!m_font.openFromFile("ressources/fonts/arial.ttf")) {
 		//LOG	
 	}
 
 	//GUI elements
+	// Background
 	sf::RectangleShape background;
 	background.setSize(sf::Vector2f(m_width, m_height));
 	background.setFillColor(sf::Color(40,40,40));
 	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(background)));
 
+	// Drag Area
 	sf::RectangleShape dragArea;
 	float dragAreaHeight = 30;
 	dragArea.setSize(sf::Vector2f(m_width, dragAreaHeight));
@@ -149,6 +156,18 @@ bool GuiMainWindow::createWindow()
 	dragArea.setPosition({0, 0});
 	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(dragArea)));
 
+	// Icon
+	iconTexture.resize({ m_icon.getSize().x, m_icon.getSize().y });
+	iconTexture.update(m_icon);
+	iconTexture.setSmooth(true);
+	sf::Sprite iconSprite(iconTexture);
+	float scale = dragAreaHeight*0.7 / static_cast<float>(m_icon.getSize().x);
+	iconSprite.setScale({scale, scale});
+	iconSprite.setOrigin(iconSprite.getLocalBounds().getCenter());
+	iconSprite.setPosition({ dragAreaHeight / 2, dragAreaHeight / 2 });
+	m_drawables.push_back(std::move(std::make_unique<sf::Sprite>(iconSprite)));
+
+	// Title Text
 	sf::Text titleText(m_font, "Automatic Runway Assignement System", 25);
 	titleText.setFillColor(sf::Color::White);
 	titleText.setOrigin(titleText.getLocalBounds().getCenter());
@@ -183,6 +202,7 @@ bool GuiMainWindow::createWindow()
 	});
 	m_gui.add(m_minimiseButton);
 
-	return true;
+	m_grid = tgui::Grid::create();
 
+	return true;
 }

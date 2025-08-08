@@ -59,7 +59,8 @@ protected:
 #endif
 
 	std::vector <std::unique_ptr<sf::Drawable>> m_drawables;
-
+	sf::Texture iconTexture;
+	sf::Image m_icon;
 	sf::Font m_font;
 };
 
@@ -72,6 +73,7 @@ public:
 private:
 	tgui::Button::Ptr m_closeButton;
 	tgui::Button::Ptr m_minimiseButton;
+	tgui::Grid::Ptr m_grid;
 
 	POINT clickOffset_{};
 	
