@@ -19,11 +19,11 @@ void Aras::initialise()
 
 	createMainWindow();
 
+
 	while (true) {
 		if (m_stop)
 			return;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		for (auto& window : m_windows) {
 			while (const std::optional<sf::Event> event = window->pollWindowEvent()) {
 				window->processEvents(*event);
@@ -32,7 +32,7 @@ void Aras::initialise()
 				window->render();
 			}
 			else {
-				return;
+				return; // If any window is closed, we stop the application meaning we can't have separate windows for the moment
 			}
 		}
 	}
@@ -54,7 +54,7 @@ void Aras::shutdown()
 
 void Aras::createMainWindow()
 {
-	std::unique_ptr<GuiWindow> mainWindow = std::make_unique<GuiWindow>(1000, 500, "ARAS");
+	std::unique_ptr<GuiWindow> mainWindow = std::make_unique<GuiMainWindow>(1000, 500, "ARAS");
 	if (mainWindow->createWindow()) {
 		m_windows.push_back(std::move(mainWindow));
 	} else {
