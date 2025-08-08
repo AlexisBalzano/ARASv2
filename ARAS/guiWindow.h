@@ -31,11 +31,12 @@ public:
 	GuiWindow& operator=(GuiWindow&&) noexcept = default;
 
 	virtual bool createWindow();
+	void createBaseWindowLayout(const std::string& title);
 	std::optional<sf::Event> pollWindowEvent();
 	virtual void processEvents(const sf::Event& event);
 	void render();
-
 	bool isOpen() const;
+
 
 #ifdef _WIN32
 	void updateDrag();
@@ -51,17 +52,19 @@ protected:
 	std::string m_title;
 	sf::RenderWindow m_window;
 	tgui::Gui m_gui;
-
-#ifdef _WIN32
-	HWND m_hwnd = nullptr; // Handle to the window for dragging
-	bool m_dragging = false; // Flag to check if the window is being dragged
-	POINT m_clickOffset; // Offset of the click position relative to the window position
-#endif
-
+	tgui::Button::Ptr m_closeButton;
+	tgui::Button::Ptr m_minimiseButton;
 	std::vector <std::unique_ptr<sf::Drawable>> m_drawables;
 	sf::Texture iconTexture;
 	sf::Image m_icon;
 	sf::Font m_font;
+
+#ifdef _WIN32
+	HWND m_hwnd = nullptr;
+	bool m_dragging = false;
+	POINT m_clickOffset;
+#endif
+
 };
 
 class GuiMainWindow : public GuiWindow {
@@ -69,10 +72,9 @@ public:
 	GuiMainWindow(unsigned int width, unsigned int height, const std::string& title);
 	
 	bool createWindow() override;
+	void createMainWindowWidgets();
 
 private:
-	tgui::Button::Ptr m_closeButton;
-	tgui::Button::Ptr m_minimiseButton;
 	tgui::Grid::Ptr m_grid;
 
 	POINT clickOffset_{};
