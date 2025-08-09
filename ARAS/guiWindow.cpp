@@ -39,14 +39,14 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 	// Background
 	sf::RectangleShape background;
 	background.setSize(sf::Vector2f(m_width, m_height));
-	background.setFillColor(sf::Color(40, 40, 40));
+	background.setFillColor(Colors::LightGrey);
 	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(background)));
 
 	// Drag Area
 	sf::RectangleShape dragArea;
 	float dragAreaHeight = 30;
 	dragArea.setSize(sf::Vector2f(m_width, dragAreaHeight));
-	dragArea.setFillColor(sf::Color(50, 50, 50));
+	dragArea.setFillColor(Colors::LightGrey);
 	dragArea.setPosition({ 0, 0 });
 	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(dragArea)));
 
@@ -206,6 +206,8 @@ bool GuiMainWindow::createWindow()
 		//LOG	
 	}
 
+	m_gui.setFont("ressources/fonts/arial.ttf");
+
 	createBaseWindowLayout("Automatic Runway Assignement System");
 	createMainWindowWidgets();
 
@@ -215,33 +217,126 @@ bool GuiMainWindow::createWindow()
 
 void GuiMainWindow::createMainWindowWidgets()
 {
-	//TODO: (placeholder)
-	sf::RectangleShape container;
-	container.setSize(sf::Vector2f(m_width*0.9, m_height*0.8));
-	container.setOrigin(container.getLocalBounds().getCenter());
-	container.setPosition({ static_cast<float>(m_width) / 2, static_cast<float>(m_height) / 2 + 15});
-	container.setFillColor(sf::Color(60, 60, 60));
-	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(container)));
+	// Vertical Layout
+	m_verticalLayout = tgui::VerticalLayout::create();
+	m_verticalLayout->setSize({ m_width * 0.9f, m_height * 0.8f });
+	m_verticalLayout->setPosition({ m_width * 0.05f, m_height * 0.1f });
+	m_verticalLayout->addSpace(1);
 
-	m_grid = tgui::Grid::create();
-	m_grid->setSize({ m_width * 0.9f, m_height * 0.8f });
-	m_grid->setPosition({ m_width * 0.05f, m_height * 0.15f });
+	// Row 1
+	m_row1 = tgui::GrowHorizontalLayout::create();
+	m_row1->setSize({ m_width * 0.9f, m_height * 0.16f });
+	m_row1->getRenderer()->setPadding({ 20, 0, 20, 0 });
 	
-	tgui::Button::Ptr button1 = createButton("Button 1", { 0,0 }, { 200,100 }, {});
-	m_grid->add(button1);
-	m_grid->setWidgetCell(button1, 0, 0);
-	m_grid->setWidgetAlignment(button1, tgui::Grid::Alignment::Center);
+	// Status Text
+	m_statusText = tgui::Label::create("Status: Ready");
+	m_statusText->setTextSize(20);
+	m_statusText->getRenderer()->setTextColor(tgui::Color::Green);
+	m_statusText->getRenderer()->setBackgroundColor(Colors::Grey);
+	m_row1->add(m_statusText);
+	m_verticalLayout->add(m_row1);
+	m_verticalLayout->addSpace(1);
+	
 
-	tgui::Button::Ptr button2 = createButton("Button 2", {0,0}, {200,100}, {});
-	m_grid->add(button2);
-	m_grid->setWidgetCell(button2, 0, 1);
-	m_grid->setWidgetAlignment(button2, tgui::Grid::Alignment::Center);
+	// Row 2
+	m_row2 = tgui::GrowHorizontalLayout::create();
+	m_row2->setSize({ m_width * 0.9f, m_height * 0.16f });
+	m_row2->getRenderer()->setPadding({ 20, 0, 20, 0 });
 
-	tgui::Button::Ptr button3 = createButton("Button 3", { 0,0 }, { 200,100 }, {});
-	m_grid->add(button3);
-	m_grid->setWidgetCell(button3, 1, 0);
-	m_grid->setWidgetAlignment(button3, tgui::Grid::Alignment::Center);
+	// Token Label
+	tgui::Label::Ptr tokenLabel = tgui::Label::create("API Token: ");
+	tokenLabel->setTextSize(20);
+	tokenLabel->getRenderer()->setTextColor(tgui::Color::White);
+	tokenLabel->getRenderer()->setBackgroundColor(Colors::Grey);
+	m_row2->add(tokenLabel);
 
-	m_gui.add(m_grid);
+	// Token Entry
+	m_tokenEntry = tgui::EditBox::create();
+	m_tokenEntry->setSize({ m_width * 0.6f, 30 });
+	m_tokenEntry->setDefaultText("Enter API token");
+	m_tokenEntry->setTextSize(20);
+	m_row2->add(m_tokenEntry);
+	m_verticalLayout->add(m_row2);
+	m_verticalLayout->addSpace(1.2);
+
+
+	// Row 3
+	m_row3 = tgui::GrowHorizontalLayout::create();
+	m_row3->setSize({ m_width * 0.9f, m_height * 0.016f });
+	m_row3->getRenderer()->setPadding({ 20, 0, 20, 0 });
+
+
+	// FIR Airport Label
+	tgui::Label::Ptr firAirportLabel = tgui::Label::create("FIR Airports: ");
+	firAirportLabel->setTextSize(20);
+	firAirportLabel->getRenderer()->setTextColor(tgui::Color::White);
+	firAirportLabel->getRenderer()->setBackgroundColor(Colors::Grey);
+	m_row3->add(firAirportLabel);
+
+	// FIR Selector
+	m_firSelector = tgui::ComboBox::create();
+	m_firSelector->setSize({ m_width * 0.2f, 30 });
+	m_firSelector->setTextSize(20);
+	m_firSelector->addItem("LFBB");
+	m_firSelector->addItem("LFFF");
+	m_firSelector->addItem("LFMM");
+	m_firSelector->setSelectedItemByIndex(0);
+	m_row3->add(m_firSelector);
+
+	// Airport List
+	m_airportList = tgui::EditBox::create();
+	m_airportList->setSize({ m_width * 0.4f, 30 });
+	m_airportList->setDefaultText("Enter airport ICAOs (comma separated)");
+	m_airportList->setTextSize(20);
+	m_row3->add(m_airportList);
+
+	// Reset Button
+	ButtonColors resetButtonColors;
+	resetButtonColors.background = Colors::Red;
+	resetButtonColors.backgroundHover = tgui::Color::Red;
+	resetButtonColors.text = tgui::Color::White;
+	m_resetButton = createButton("Reset", { m_width * 0.05f, m_height * 0.85f }, { 70, 30 }, resetButtonColors);
+	// OnCLick
+	m_row3->add(m_resetButton);
+	m_verticalLayout->add(m_row3);
+	m_verticalLayout->addSpace(1.2);
+
+
+	// Row 4
+	m_row4 = tgui::GrowHorizontalLayout::create();
+	m_row4->setSize({ m_width * 0.9f, m_height * 0.16f });
+	m_row4->getRenderer()->setPadding({ 20, 0, 20, 0 });
+
+	// Rwy location Button
+	ButtonColors arasButtonColors;
+	arasButtonColors.background = Colors::Blue;
+	arasButtonColors.text = tgui::Color::White;
+	arasButtonColors.backgroundHover = Colors::Yellow;
+	arasButtonColors.textHover = tgui::Color::Black;
+	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 200, 30 }, arasButtonColors);
+	// OnClick
+	m_row4->add(m_rwyLocationButton);
+
+	// Runway Assign Button
+	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { m_width * 0.1f, 30 }, arasButtonColors);
+	// OnClick
+	m_row4->add(m_rwyAssignButton);
+	m_verticalLayout->add(m_row4);
+	m_verticalLayout->addSpace(0.5);
+
+
+	// Row 5
+	m_row5 = tgui::GrowHorizontalLayout::create();
+	m_row5->setSize({ m_width * 0.9f, m_height * 0.16f });
+	m_row5->getRenderer()->setPadding({ 20, 0, 20, 0 });
+
+	// Settings Button
+	m_settingsButton = createButton("Settings", { m_width * 0.5f, m_height * 0.85f }, { m_width * 0.1f, 30 }, arasButtonColors);
+	// OnClick
+	m_row5->add(m_settingsButton);
+	m_verticalLayout->add(m_row5);
+
+
+	m_gui.add(m_verticalLayout);
 
 }

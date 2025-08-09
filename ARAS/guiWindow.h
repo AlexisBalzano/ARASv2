@@ -75,7 +75,25 @@ public:
 	void createMainWindowWidgets();
 
 private:
-	tgui::Grid::Ptr m_grid;
+	tgui::VerticalLayout::Ptr m_verticalLayout;
+	tgui::GrowHorizontalLayout::Ptr m_row1;
+	tgui::GrowHorizontalLayout::Ptr m_row2;
+	tgui::GrowHorizontalLayout::Ptr m_row3;
+	tgui::GrowHorizontalLayout::Ptr m_row4;
+	tgui::GrowHorizontalLayout::Ptr m_row5;
+
+	tgui::Label::Ptr m_statusText;
+
+	tgui::EditBox::Ptr m_tokenEntry;
+
+	tgui::ComboBox::Ptr m_firSelector;
+	tgui::EditBox::Ptr m_airportList;
+	tgui::Button::Ptr m_resetButton;
+
+	tgui::Button::Ptr m_rwyLocationButton;
+	tgui::Button::Ptr m_rwyAssignButton;
+
+	tgui::Button::Ptr m_settingsButton;
 
 	POINT clickOffset_{};
 	
