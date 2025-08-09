@@ -37,18 +37,21 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 {
 	//GUI elements
 	// Background
-	sf::RectangleShape background;
-	background.setSize(sf::Vector2f(m_width, m_height));
-	background.setFillColor(Colors::LightGrey);
-	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(background)));
+	backgroundCanvas = tgui::CanvasSFML::create({ m_width, m_height });
+	m_gui.add(backgroundCanvas);
+	backgroundCanvas->clear();
+
+	sf::RectangleShape rect({ static_cast<float>(m_width), static_cast<float>(m_height) });
+	rect.setFillColor(Colors::LightGrey);
+	rect.setOrigin({ rect.getLocalBounds().getCenter().x, 0 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 0 });
+	backgroundCanvas->draw(rect);
+
+	backgroundCanvas->display();
+
 
 	// Drag Area
-	sf::RectangleShape dragArea;
 	float dragAreaHeight = 30;
-	dragArea.setSize(sf::Vector2f(m_width, dragAreaHeight));
-	dragArea.setFillColor(Colors::LightGrey);
-	dragArea.setPosition({ 0, 0 });
-	m_drawables.push_back(std::move(std::make_unique<sf::RectangleShape>(dragArea)));
 
 	// Icon
 	iconTexture.resize({ m_icon.getSize().x, m_icon.getSize().y });
@@ -135,12 +138,12 @@ void GuiWindow::render()
 {
 	m_window.clear();
 
+	m_gui.draw();
 	for (const auto& drawable : m_drawables) {
 		m_window.draw(*drawable);
 	}
 
 	updateDrag();
-	m_gui.draw();
 	m_window.display();
 }
 
@@ -176,6 +179,8 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 	button->getRenderer()->setBackgroundColorHover(colors.backgroundHover);
 	button->getRenderer()->setBackgroundColorDown(colors.backgroundDown);
 	button->getRenderer()->setBorders({ 0, 0, 0, 0 });
+	button->getRenderer()->setRoundedBorderRadius(10);
+	button->setMouseCursor(tgui::Cursor::Type::Hand);
 	return button;
 }
 
@@ -217,6 +222,19 @@ bool GuiMainWindow::createWindow()
 
 void GuiMainWindow::createMainWindowWidgets()
 {
+	// Dark Rectangle background
+	sf::RectangleShape rect({ static_cast<float>(m_width), static_cast<float>(m_height) });
+	rect.setFillColor(Colors::Grey);
+	rect.setSize({ 900, 43 });
+	rect.setOrigin({ rect.getLocalBounds().getCenter().x, 0 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 80 });
+	backgroundCanvas->draw(rect);
+	rect.setPosition({ static_cast<float>(m_width) / 2, 170 });
+	backgroundCanvas->draw(rect);
+	rect.setPosition({ static_cast<float>(m_width) / 2, 260 });
+	backgroundCanvas->draw(rect);
+
+
 	// Vertical Layout
 	m_verticalLayout = tgui::VerticalLayout::create();
 	m_verticalLayout->setSize({ m_width * 0.9f, m_height * 0.8f });
@@ -232,7 +250,6 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_statusText = tgui::Label::create("Status: Ready");
 	m_statusText->setTextSize(20);
 	m_statusText->getRenderer()->setTextColor(tgui::Color::Green);
-	m_statusText->getRenderer()->setBackgroundColor(Colors::Grey);
 	m_row1->add(m_statusText);
 	m_verticalLayout->add(m_row1);
 	m_verticalLayout->addSpace(1);
@@ -247,14 +264,17 @@ void GuiMainWindow::createMainWindowWidgets()
 	tgui::Label::Ptr tokenLabel = tgui::Label::create("API Token: ");
 	tokenLabel->setTextSize(20);
 	tokenLabel->getRenderer()->setTextColor(tgui::Color::White);
-	tokenLabel->getRenderer()->setBackgroundColor(Colors::Grey);
+	tokenLabel->getRenderer()->setPadding({ 0, 8, 25, 0 });
 	m_row2->add(tokenLabel);
 
 	// Token Entry
 	m_tokenEntry = tgui::EditBox::create();
-	m_tokenEntry->setSize({ m_width * 0.6f, 30 });
+	m_tokenEntry->setSize({ 710, 30 });
 	m_tokenEntry->setDefaultText("Enter API token");
+	m_tokenEntry->setPasswordCharacter('*');
 	m_tokenEntry->setTextSize(20);
+	m_tokenEntry->getRenderer()->setRoundedBorderRadius(10);
+	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
 	m_row2->add(m_tokenEntry);
 	m_verticalLayout->add(m_row2);
 	m_verticalLayout->addSpace(1.2);
@@ -270,24 +290,28 @@ void GuiMainWindow::createMainWindowWidgets()
 	tgui::Label::Ptr firAirportLabel = tgui::Label::create("FIR Airports: ");
 	firAirportLabel->setTextSize(20);
 	firAirportLabel->getRenderer()->setTextColor(tgui::Color::White);
-	firAirportLabel->getRenderer()->setBackgroundColor(Colors::Grey);
+	firAirportLabel->getRenderer()->setPadding({ 0, 8, 0, 0 });
 	m_row3->add(firAirportLabel);
 
 	// FIR Selector
 	m_firSelector = tgui::ComboBox::create();
-	m_firSelector->setSize({ m_width * 0.2f, 30 });
+	m_firSelector->setSize({ 100, 30 });
 	m_firSelector->setTextSize(20);
 	m_firSelector->addItem("LFBB");
 	m_firSelector->addItem("LFFF");
 	m_firSelector->addItem("LFMM");
 	m_firSelector->setSelectedItemByIndex(0);
+	m_firSelector->getRenderer()->setRoundedBorderRadius(10);
+	m_firSelector->setMouseCursor(tgui::Cursor::Type::Hand);
 	m_row3->add(m_firSelector);
 
 	// Airport List
 	m_airportList = tgui::EditBox::create();
-	m_airportList->setSize({ m_width * 0.4f, 30 });
+	m_airportList->setSize({ 500, 30 });
 	m_airportList->setDefaultText("Enter airport ICAOs (comma separated)");
 	m_airportList->setTextSize(20);
+	m_airportList->getRenderer()->setRoundedBorderRadius(10);
+	m_airportList->setMouseCursor(tgui::Cursor::Type::Text);
 	m_row3->add(m_airportList);
 
 	// Reset Button
@@ -313,12 +337,12 @@ void GuiMainWindow::createMainWindowWidgets()
 	arasButtonColors.text = tgui::Color::White;
 	arasButtonColors.backgroundHover = Colors::Yellow;
 	arasButtonColors.textHover = tgui::Color::Black;
-	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 200, 30 }, arasButtonColors);
+	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
 	// OnClick
 	m_row4->add(m_rwyLocationButton);
 
 	// Runway Assign Button
-	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { m_width * 0.1f, 30 }, arasButtonColors);
+	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
 	// OnClick
 	m_row4->add(m_rwyAssignButton);
 	m_verticalLayout->add(m_row4);
@@ -331,12 +355,11 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_row5->getRenderer()->setPadding({ 20, 0, 20, 0 });
 
 	// Settings Button
-	m_settingsButton = createButton("Settings", { m_width * 0.5f, m_height * 0.85f }, { m_width * 0.1f, 30 }, arasButtonColors);
+	m_settingsButton = createButton("Settings", { m_width * 0.5f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
 	// OnClick
 	m_row5->add(m_settingsButton);
 	m_verticalLayout->add(m_row5);
 
 
 	m_gui.add(m_verticalLayout);
-
 }

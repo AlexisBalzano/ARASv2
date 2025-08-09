@@ -6,23 +6,8 @@ C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Except
       C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
       see declaration of 'sf::Exception'
   
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,43): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,43): warning C4244:         with
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,43): warning C4244:         [
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,43): warning C4244:             T=float
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,43): warning C4244:         ]
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,34): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,34): warning C4244:         with
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,34): warning C4244:         [
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,34): warning C4244:             T=float
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(41,34): warning C4244:         ]
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(48,32): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(48,32): warning C4244:         with
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(48,32): warning C4244:         [
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(48,32): warning C4244:             T=float
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(48,32): warning C4244:         ]
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(54,20): warning C4834: discarding return value of function with [[nodiscard]] attribute
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(58,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(260,29): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(302,29): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(57,20): warning C4834: discarding return value of function with [[nodiscard]] attribute
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(61,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(280,29): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\alexi\Documents\ARAS Dev\ARAS\guiWindow.cpp(326,29): warning C4305: 'argument': truncation from 'double' to 'float'
   ARAS.vcxproj -> C:\Users\alexi\Documents\ARAS Dev\x64\Debug\ARAS.exe

@@ -11,9 +11,9 @@
 
 
 struct ButtonColors {
-	tgui::Color background = Colors::Grey;
+	tgui::Color background = Colors::LightGrey;
 	tgui::Color backgroundDown = Colors::DarkGrey;
-	tgui::Color backgroundHover = Colors::LightGrey;
+	tgui::Color backgroundHover = Colors::Grey;
 	tgui::Color text = tgui::Color::White;
 	tgui::Color textHover = tgui::Color::Black;
 	tgui::Color textDown = tgui::Color::White;
@@ -52,6 +52,7 @@ protected:
 	std::string m_title;
 	sf::RenderWindow m_window;
 	tgui::Gui m_gui;
+	tgui::CanvasSFML::Ptr backgroundCanvas;
 	tgui::Button::Ptr m_closeButton;
 	tgui::Button::Ptr m_minimiseButton;
 	std::vector <std::unique_ptr<sf::Drawable>> m_drawables;
