@@ -4,6 +4,7 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 
 #include "Colors.h"
+#include "roundedRectangle.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -97,5 +98,5 @@ private:
 	tgui::Button::Ptr m_settingsButton;
 
 	POINT clickOffset_{};
-	
+
 };

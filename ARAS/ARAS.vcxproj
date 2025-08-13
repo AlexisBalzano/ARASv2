@@ -142,6 +142,7 @@
     <ClInclude Include="aras.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="guiWindow.h" />
+    <ClInclude Include="roundedRectangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

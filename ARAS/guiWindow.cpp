@@ -24,8 +24,15 @@ bool GuiWindow::createWindow()
 	if (!m_window.isOpen())
 		return false;
 	m_window.setFramerateLimit(60);
+
 	m_gui.setTarget(m_window);
 	m_hwnd = m_window.getNativeHandle();
+
+#ifdef _WIN32
+	// Set the window to be transparent
+	SetWindowLong(m_hwnd, GWL_EXSTYLE, GetWindowLong(m_hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
+#endif
 
 	if (!m_font.openFromFile("fonts/arial.ttf")) {
 		//LOG
@@ -41,12 +48,12 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 	// Background
 	backgroundCanvas = tgui::CanvasSFML::create({ m_width, m_height });
 	m_gui.add(backgroundCanvas);
-	backgroundCanvas->clear();
+	backgroundCanvas->clear(sf::Color::Transparent);
 
-	sf::RectangleShape rect({ static_cast<float>(m_width), static_cast<float>(m_height) });
+	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) }, 10);
 	rect.setFillColor(Colors::LightGrey);
-	rect.setOrigin({ rect.getLocalBounds().getCenter().x, 0 });
-	rect.setPosition({ static_cast<float>(m_width) / 2, 0 });
+	rect.setOrigin(rect.getLocalBounds().getCenter());
+	rect.setPosition({ static_cast<float>(m_width) / 2, static_cast<float>(m_height) / 2});
 	backgroundCanvas->draw(rect);
 
 	backgroundCanvas->display();
@@ -138,7 +145,7 @@ void GuiWindow::processEvents(const sf::Event& event)
 
 void GuiWindow::render()
 {
-	m_window.clear();
+	m_window.clear(sf::Color::Transparent);
 
 	m_gui.draw();
 	for (const auto& drawable : m_drawables) {
@@ -205,6 +212,12 @@ bool GuiMainWindow::createWindow()
 	m_gui.setTarget(m_window);
 	m_hwnd = m_window.getNativeHandle();
 
+#ifdef _WIN32
+	// Set the window to be transparent
+	SetWindowLong(m_hwnd, GWL_EXSTYLE, GetWindowLong(m_hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
+#endif
+
 	// Loading dependencies
 	if (m_icon.loadFromFile("ressources/images/icon.png")) {
 		//LOG
@@ -227,17 +240,16 @@ bool GuiMainWindow::createWindow()
 void GuiMainWindow::createMainWindowWidgets()
 {
 	// Dark Rectangle background
-	sf::RectangleShape rect({ static_cast<float>(m_width), static_cast<float>(m_height) });
+	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) }, 10);
 	rect.setFillColor(Colors::Grey);
 	rect.setSize({ 900, 60 });
-	rect.setOrigin({ rect.getLocalBounds().getCenter().x, 0 });
-	rect.setPosition({ static_cast<float>(m_width) / 2, 72 });
+	rect.setOrigin(rect.getLocalBounds().getCenter());
+	rect.setPosition({ static_cast<float>(m_width) / 2, 102 });
 	backgroundCanvas->draw(rect);
-	rect.setPosition({ static_cast<float>(m_width) / 2, 162 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 192 });
 	backgroundCanvas->draw(rect);
-	rect.setPosition({ static_cast<float>(m_width) / 2, 252 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 282 });
 	backgroundCanvas->draw(rect);
-
 
 	// Vertical Layout
 	m_verticalLayout = tgui::VerticalLayout::create();
