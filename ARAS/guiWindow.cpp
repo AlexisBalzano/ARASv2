@@ -1,5 +1,5 @@
-#include "guiWindow.h"
-#include "aras.h"
+#include "GuiWindow.h"
+#include "Aras.h"
 
 #if defined(_WIN32)
 #include <windows.h>

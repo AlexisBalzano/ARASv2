@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Colors.h"
-#include "roundedRectangle.h"
+#include "RoundedRectangle.h"
 
 #ifdef _WIN32
 #include <windows.h>

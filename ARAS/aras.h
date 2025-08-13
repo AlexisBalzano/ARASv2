@@ -3,7 +3,7 @@
 #include <Thread>
 
 
-#include "guiWindow.h"
+#include "GuiWindow.h"
 
 
 class Aras {

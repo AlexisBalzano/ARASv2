@@ -134,15 +134,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aras.cpp" />
-    <ClCompile Include="guiWindow.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Aras.cpp" />
+    <ClCompile Include="GuiWindow.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aras.h" />
+    <ClInclude Include="Aras.h" />
     <ClInclude Include="Colors.h" />
-    <ClInclude Include="guiWindow.h" />
-    <ClInclude Include="roundedRectangle.h" />
+    <ClInclude Include="DataManager.h" />
+    <ClInclude Include="GuiWindow.h" />
+    <ClInclude Include="RoundedRectangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
