@@ -23,6 +23,8 @@ public:
 	void resetAirportsList();
 	void saveToken();
 	void setStatus(); // Change return type accordingly
+	void OnFIRChangeEvent();
+	void updateAirportsList();
 
 
 private:

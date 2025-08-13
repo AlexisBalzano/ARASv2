@@ -300,7 +300,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_tokenEntry->setTextSize(20);
 	m_tokenEntry->getRenderer()->setRoundedBorderRadius(10);
 	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
-	m_tokenEntry->onTextChange([this] {
+	m_tokenEntry->onReturnOrUnfocus([this] {
 		m_aras->saveToken();
 		});
 	m_row2->add(m_tokenEntry);
@@ -331,6 +331,9 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_firSelector->setSelectedItemByIndex(0);
 	m_firSelector->getRenderer()->setRoundedBorderRadius(10);
 	m_firSelector->setMouseCursor(tgui::Cursor::Type::Hand);
+	m_firSelector->onItemSelect([this] {
+		m_aras->OnFIRChangeEvent();
+		});
 	m_row3->add(m_firSelector);
 
 	// Airport List
@@ -340,6 +343,9 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_airportList->setTextSize(20);
 	m_airportList->getRenderer()->setRoundedBorderRadius(10);
 	m_airportList->setMouseCursor(tgui::Cursor::Type::Text);
+	m_airportList->onReturnOrUnfocus([this] {
+		m_aras->updateAirportsList();
+		});
 	m_row3->add(m_airportList);
 
 	// Reset Button

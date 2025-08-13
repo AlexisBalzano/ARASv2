@@ -74,6 +74,8 @@ void Aras::createMainWindow()
 
 void Aras::assignRunways()
 {
+	std::cout << "Assigning runways..." << std::endl;
+	// Implement runway assignment logic here
 }
 
 void Aras::openSettings()
@@ -89,12 +91,26 @@ void Aras::openSettings()
 
 void Aras::resetAirportsList()
 {
+	std::cout << "Resetting airports list..." << std::endl;
 }
 
 void Aras::saveToken()
 {
+	std::cout << "Saving token..." << std::endl;
 }
 
 void Aras::setStatus()
 {
+}
+
+void Aras::OnFIRChangeEvent()
+{
+	std::cout << "FIR change event triggered." << std::endl;
+	// Implement FIR change logic here
+}
+
+void Aras::updateAirportsList()
+{
+	std::cout << "Updating airports list..." << std::endl;
+	// Implement logic to update the airports list
 }
