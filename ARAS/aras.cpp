@@ -17,6 +17,8 @@ void Aras::initialise()
 	m_windows.clear();
 	//m_renderThread = std::thread(&Aras::run, this);
 
+	m_dataManager = std::make_unique<DataManager>();
+
 	createMainWindow();
 
 

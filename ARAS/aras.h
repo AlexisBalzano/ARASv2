@@ -4,6 +4,7 @@
 
 
 #include "GuiWindow.h"
+#include "DataManager.h"
 
 
 class Aras {
@@ -28,6 +29,7 @@ public:
 
 
 private:
+	std::unique_ptr<DataManager> m_dataManager;
 	std::thread m_renderThread;
 	bool m_stop = false;
 
