@@ -440,15 +440,10 @@ bool GuiSettingWindow::createWindow()
 void GuiSettingWindow::createSettingsWindowWidgets()
 {
 	// Dark Rectangle background
-	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) }, 10);
+	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) - 30}, 10);
 	rect.setFillColor(Colors::Grey);
-	rect.setSize({ 900, 60 });
 	rect.setOrigin(rect.getLocalBounds().getCenter());
-	rect.setPosition({ static_cast<float>(m_width) / 2, 102 });
-	backgroundCanvas->draw(rect);
-	rect.setPosition({ static_cast<float>(m_width) / 2, 192 });
-	backgroundCanvas->draw(rect);
-	rect.setPosition({ static_cast<float>(m_width) / 2, 282 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, static_cast<float>(m_height) / 2 + 15});
 	backgroundCanvas->draw(rect);
 
 	// Vertical Layout
@@ -457,12 +452,6 @@ void GuiSettingWindow::createSettingsWindowWidgets()
 	m_verticalLayout->setPosition({ m_width * 0.05f, m_height * 0.1f });
 	m_verticalLayout->addSpace(1);
 
-	// FIR Airport Label
-	tgui::Label::Ptr firAirportLabel = tgui::Label::create("FIR Airports: ");
-	firAirportLabel->setTextSize(20);
-	firAirportLabel->getRenderer()->setTextColor(tgui::Color::White);
-	firAirportLabel->getRenderer()->setPadding({ 0, 8, 0, 0 });
-	m_verticalLayout->add(firAirportLabel);
-
+	
 	m_gui.add(m_verticalLayout);
 }
