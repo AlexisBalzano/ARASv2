@@ -1,5 +1,5 @@
 #include "guiWindow.h"
-
+#include "aras.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -7,8 +7,14 @@
 #include <X11/Xlib.h>
 #endif
 
-GuiWindow::GuiWindow(unsigned int width, unsigned int height, const std::string& title)
-	: m_width(width), m_height(height), m_title(title) {}
+GuiWindow::GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
+	: m_width(width), m_height(height), m_title(title), m_aras(aras)
+{
+#ifdef _WIN32
+	m_dragging = false;
+	m_hwnd = nullptr;
+#endif
+}
 
 GuiWindow::~GuiWindow()
 {
@@ -34,10 +40,17 @@ bool GuiWindow::createWindow()
 	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
 #endif
 
-	if (!m_font.openFromFile("fonts/arial.ttf")) {
+	// Loading dependencies
+	if (m_icon.loadFromFile("ressources/images/icon.png")) {
 		//LOG
 	}
-	
+	m_window.setIcon(m_icon);
+
+	if (!m_font.openFromFile("ressources/fonts/arial.ttf")) {
+		//LOG	
+	}
+
+	m_gui.setFont("ressources/fonts/arial.ttf");
 
 	return true;
 }
@@ -194,12 +207,8 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 }
 
 
-GuiMainWindow::GuiMainWindow(unsigned int width, unsigned int height, const std::string& title)
-	: GuiWindow(width, height, title)
-{
-	m_dragging = false;
-	m_hwnd = nullptr;
-}
+GuiMainWindow::GuiMainWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
+	: GuiWindow(width, height, title, aras) {}
 
 bool GuiMainWindow::createWindow()
 {
@@ -291,6 +300,9 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_tokenEntry->setTextSize(20);
 	m_tokenEntry->getRenderer()->setRoundedBorderRadius(10);
 	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
+	m_tokenEntry->onTextChange([this] {
+		m_aras->saveToken();
+		});
 	m_row2->add(m_tokenEntry);
 	m_verticalLayout->add(m_row2);
 	m_verticalLayout->addSpace(1.2);
@@ -336,7 +348,9 @@ void GuiMainWindow::createMainWindowWidgets()
 	resetButtonColors.backgroundHover = tgui::Color::Red;
 	resetButtonColors.text = tgui::Color::White;
 	m_resetButton = createButton("Reset", { m_width * 0.05f, m_height * 0.85f }, { 70, 30 }, resetButtonColors);
-	// OnCLick
+	m_resetButton->onClick([this] {
+		m_aras->resetAirportsList();
+		});
 	m_row3->add(m_resetButton);
 	m_verticalLayout->add(m_row3);
 	m_verticalLayout->addSpace(1.2);
@@ -354,12 +368,14 @@ void GuiMainWindow::createMainWindowWidgets()
 	arasButtonColors.backgroundHover = Colors::Yellow;
 	arasButtonColors.textHover = tgui::Color::Black;
 	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
-	// OnClick
+	// OnClick inside GUI
 	m_row4->add(m_rwyLocationButton);
 
 	// Runway Assign Button
 	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
-	// OnClick
+	m_rwyAssignButton->onClick([this] {
+		m_aras->assignRunways();
+	});
 	m_row4->add(m_rwyAssignButton);
 	m_verticalLayout->add(m_row4);
 	m_verticalLayout->addSpace(0.5);
@@ -372,10 +388,81 @@ void GuiMainWindow::createMainWindowWidgets()
 
 	// Settings Button
 	m_settingsButton = createButton("Settings", { m_width * 0.5f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
-	// OnClick
+	m_settingsButton->onClick([this] {
+		m_aras->openSettings();
+	});
 	m_row5->add(m_settingsButton);
 	m_verticalLayout->add(m_row5);
 
+
+	m_gui.add(m_verticalLayout);
+}
+
+GuiSettingWindow::GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
+	: GuiWindow(width, height, title, aras) {}
+
+bool GuiSettingWindow::createWindow()
+{
+	sf::ContextSettings settings;
+	settings.antiAliasingLevel = 8;
+	m_window.create(sf::VideoMode({ m_width, m_height }), m_title, sf::Style::None, sf::State::Windowed, settings);
+	if (!m_window.isOpen())
+		return false;
+	m_window.setFramerateLimit(60);
+	m_gui.setTarget(m_window);
+	m_hwnd = m_window.getNativeHandle();
+
+#ifdef _WIN32
+	// Set the window to be transparent
+	SetWindowLong(m_hwnd, GWL_EXSTYLE, GetWindowLong(m_hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
+#endif
+
+	// Loading dependencies
+	if (m_icon.loadFromFile("ressources/images/icon.png")) {
+		//LOG
+	}
+	m_window.setIcon(m_icon);
+
+	if (!m_font.openFromFile("ressources/fonts/arial.ttf")) {
+		//LOG	
+	}
+
+	m_gui.setFont("ressources/fonts/arial.ttf");
+	
+	createBaseWindowLayout("Settings");
+	createSettingsWindowWidgets();
+
+
+	return true;
+}
+
+void GuiSettingWindow::createSettingsWindowWidgets()
+{
+	// Dark Rectangle background
+	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) }, 10);
+	rect.setFillColor(Colors::Grey);
+	rect.setSize({ 900, 60 });
+	rect.setOrigin(rect.getLocalBounds().getCenter());
+	rect.setPosition({ static_cast<float>(m_width) / 2, 102 });
+	backgroundCanvas->draw(rect);
+	rect.setPosition({ static_cast<float>(m_width) / 2, 192 });
+	backgroundCanvas->draw(rect);
+	rect.setPosition({ static_cast<float>(m_width) / 2, 282 });
+	backgroundCanvas->draw(rect);
+
+	// Vertical Layout
+	m_verticalLayout = tgui::VerticalLayout::create();
+	m_verticalLayout->setSize({ m_width * 0.9f, m_height * 0.8f });
+	m_verticalLayout->setPosition({ m_width * 0.05f, m_height * 0.1f });
+	m_verticalLayout->addSpace(1);
+
+	// FIR Airport Label
+	tgui::Label::Ptr firAirportLabel = tgui::Label::create("FIR Airports: ");
+	firAirportLabel->setTextSize(20);
+	firAirportLabel->getRenderer()->setTextColor(tgui::Color::White);
+	firAirportLabel->getRenderer()->setPadding({ 0, 8, 0, 0 });
+	m_verticalLayout->add(firAirportLabel);
 
 	m_gui.add(m_verticalLayout);
 }

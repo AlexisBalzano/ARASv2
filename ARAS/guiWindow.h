@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
 #include <TGUI/Backend/SFML-Graphics.hpp>
+#include <string>
 
 #include "Colors.h"
 #include "roundedRectangle.h"
@@ -9,6 +10,8 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
+
+class Aras;
 
 
 struct ButtonColors {
@@ -22,7 +25,7 @@ struct ButtonColors {
 
 class GuiWindow {
 public:
-	GuiWindow(unsigned int width, unsigned int height, const std::string& title);
+	GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras);
 	~GuiWindow();
 
 	GuiWindow(const GuiWindow&) = delete;
@@ -37,7 +40,7 @@ public:
 	virtual void processEvents(const sf::Event& event);
 	void render();
 	bool isOpen() const;
-
+	std::string getTitle() const { return m_title; }
 
 #ifdef _WIN32
 	void updateDrag();
@@ -48,6 +51,7 @@ protected:
 
 
 protected:
+	Aras* m_aras = nullptr;
 	unsigned int m_width;
 	unsigned int m_height;
 	std::string m_title;
@@ -71,7 +75,7 @@ protected:
 
 class GuiMainWindow : public GuiWindow {
 public:
-	GuiMainWindow(unsigned int width, unsigned int height, const std::string& title);
+	GuiMainWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras);
 	
 	bool createWindow() override;
 	void createMainWindowWidgets();
@@ -99,4 +103,15 @@ private:
 
 	POINT clickOffset_{};
 
+};
+
+class GuiSettingWindow : public GuiWindow {
+public:
+	GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras);
+	bool createWindow() override;
+	void createSettingsWindowWidgets();
+
+private:
+	tgui::VerticalLayout::Ptr m_verticalLayout;
+	POINT clickOffset_{};
 };
