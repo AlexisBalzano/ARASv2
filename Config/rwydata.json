@@ -1,0 +1,303 @@
+{
+    "LFMN": {
+        "runways":{
+            "1":{
+                "heading": 40,
+                "preferential": 6,
+                "arrival": "04L",
+                "departure": "04R"
+            },
+            "2":{
+                "heading": 220,
+                "preferential": 0,
+                "arrival": "22R",
+                "departure": "22L"
+            }
+        },
+        "ICAO":"LFMN"
+    },
+    "LFKJ": {
+        "runways":{
+            "1":{
+                "heading": 200,
+                "preferential": 6,
+                "arrival": "20",
+                "departure": "20"
+            },
+            "2":{
+                "heading": 20,
+                "preferential": 0,
+                "arrival": "02",
+                "departure": "20"
+            }
+        },
+        "ICAO":"LFKJ"
+    },
+    "LFML": {
+        "runways":{
+            "1":{
+                "heading": 310,
+                "preferential": 6,
+                "arrival": "31R",
+                "departure": "31L"
+            },
+            "2":{
+                "heading": 130,
+                "preferential": 0,
+                "arrival": "13L",
+                "departure": "13R"
+            }
+        },
+        "ICAO":"LFML"
+    },
+    "LFLL": {
+        "runways":{
+            "1":{
+                "heading": 350,
+                "preferential": 6,
+                "arrival": "35R",
+                "departure": "35L"
+            },
+            "2":{
+                "heading": 170,
+                "preferential": 0,
+                "arrival": "17L",
+                "departure": "17R"
+            }
+        },
+        "ICAO":"LFLL"
+    },
+    "LFMT": {
+        "runways":{
+            "1":{
+                "heading": 300,
+                "preferential": 6,
+                "arrival": "30R",
+                "departure": "30R"
+            },
+            "2":{
+                "heading": 120,
+                "preferential": 0,
+                "arrival": "12L",
+                "departure": "12L"
+            }
+        },
+        "ICAO":"LFMT"
+    },
+    "LFKF": {
+        "runways":{
+            "1":{
+                "heading": 50,
+                "preferential": 6,
+                "arrival": "05",
+                "departure": "05"
+            },
+            "2":{
+                "heading": 230,
+                "preferential": 0,
+                "arrival": "23",
+                "departure": "23"
+            }
+        },
+        "ICAO":"LFKF"
+    },
+    "LFKB": {
+        "runways":{
+            "1":{
+                "heading": 340,
+                "preferential": 6,
+                "arrival": "34",
+                "departure": "34"
+            },
+            "2":{
+                "heading": 160,
+                "preferential": 0,
+                "arrival": "16",
+                "departure": "16"
+            }
+        },
+        "ICAO":"LFKB"
+    },
+    "LFMP": {
+        "runways":{
+            "1":{
+                "heading": 330,
+                "preferential": 6,
+                "arrival": "33",
+                "departure": "33"
+            },
+            "2":{
+                "heading": 150,
+                "preferential": 0,
+                "arrival": "15",
+                "departure": "15"
+            }
+        },
+        "ICAO":"LFMP"
+    },
+    "LFQQ": {
+        "runways":{
+            "1":{
+                "heading": 260,
+                "preferential": 0,
+                "arrival": "26",
+                "departure": "26"
+            },
+            "2":{
+                "heading": 80,
+                "preferential": 0,
+                "arrival": "08",
+                "departure": "08"
+            }
+        },
+        "ICAO":"LFQQ"
+    },
+    "LFOB": {
+        "runways":{
+            "1":{
+                "heading": 300,
+                "preferential": 0,
+                "arrival": "30",
+                "departure": "30"
+            },
+            "2":{
+                "heading": 12,
+                "preferential": 0,
+                "arrival": "12",
+                "departure": "12"
+            }
+        },
+        "ICAO":"LFOB"
+    },
+    "LFPO": {
+        "runways":{
+            "1":{
+                "heading": 60,
+                "preferential": 0,
+                "arrival": "06",
+                "departure": "07"
+            },
+            "2":{
+                "heading": 240,
+                "preferential": 0,
+                "arrival": "25",
+                "departure": "24"
+            }
+        },
+        "ICAO":"LFPO"
+    },
+    "LFPB": {
+        "runways":{
+            "1":{
+                "heading": 270,
+                "preferential": 0,
+                "arrival": "27",
+                "departure": "25"
+            },
+            "2":{
+                "heading": 70,
+                "preferential": 0,
+                "arrival": "07",
+                "departure": "09"
+            }
+        },
+        "ICAO":"LFPB"
+    },
+    "LFBO": {
+        "runways":{
+            "1":{
+                "heading": 320,
+                "preferential": 6,
+                "arrival": "32L",
+                "departure": "32R"
+            },
+            "2":{
+                "heading": 140,
+                "preferential": 0,
+                "arrival": "14R",
+                "departure": "14L"
+            }
+        },
+        "ICAO":"LFBO"
+    },
+    "LFBD": {
+        "runways":{
+            "1":{
+                "heading": 230,
+                "preferential": 0,
+                "arrival": "23",
+                "departure": "23"
+            },
+            "2":{
+                "heading": 50,
+                "preferential": 0,
+                "arrival": "05",
+                "departure": "05"
+            }
+        },
+        "ICAO":"LFBD"
+    },
+    "LFBZ": {
+        "runways":{
+            "1":{
+                "heading": 270,
+                "preferential": 0,
+                "arrival": "27",
+                "departure": "27"
+            },
+            "2":{
+                "heading": 90,
+                "preferential": 0,
+                "arrival": "09",
+                "departure": "09"
+            }
+        },
+        "ICAO":"LFBZ"
+    },
+    "LFBH": {
+        "runways":{
+            "1":{
+                "heading": 270,
+                "preferential": 5,
+                "arrival": "27",
+                "departure": "27"
+            },
+            "2":{
+                "heading": 90,
+                "preferential": 0,
+                "arrival": "09",
+                "departure": "09"
+            }
+        },
+        "ICAO":"LFBH"
+    },
+    "LFPG": {
+        "runways":{
+            "1":{
+                "heading": 260,
+                "preferential": 0,
+                "arrival": "26L",
+                "departure": "26R"
+            },
+            "2":{
+                "heading": 80,
+                "preferential": 0,
+                "arrival": "08R",
+                "departure": "08L"
+            },
+            "3":{
+                "heading": 270,
+                "preferential": 0,
+                "arrival": "27R",
+                "departure": "27L"
+            },
+            "4":{
+                "heading": 90,
+                "preferential": 0,
+                "arrival": "09L",
+                "departure": "09R"
+            }
+        },
+        "ICAO":"LFPG"
+    }
+}
