@@ -9,6 +9,7 @@ public:
 	~DataManager() = default;
 	
 	std::filesystem::path GetConfigPath();
+	bool parseConfigFile();
 	
 private:
 	std::filesystem::path m_configPath;

@@ -1,4 +1,6 @@
 #include "DataManager.h"
+#include <fstream>
+#include <iostream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -12,6 +14,7 @@
 DataManager::DataManager()
 {
 	m_configPath = GetConfigPath();
+	parseConfigFile(); // returns true if successful can be use to create default config if it doesn't exist
 }
 
 std::filesystem::path DataManager::GetConfigPath()
@@ -34,4 +37,23 @@ std::filesystem::path DataManager::GetConfigPath()
 #else
 	return std::filesystem::path(); // Return an empty path for unsupported platforms
 #endif
+}
+
+bool DataManager::parseConfigFile()
+{
+
+	std::ifstream configFile(m_configPath / "config.json");
+	if (!configFile.is_open()) {
+		std::cout << "Failed to open config file." << std::endl;
+		return false;
+	}
+	try {
+		configFile >> m_configJson;
+		configFile.close();
+		return true;
+	}
+	catch (const std::exception& e) {
+		std::cout << "Error parsing config file: " << e.what() << std::endl;
+		return false;
+	}
 }
