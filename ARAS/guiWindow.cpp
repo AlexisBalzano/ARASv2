@@ -18,7 +18,9 @@ GuiWindow::~GuiWindow()
 
 bool GuiWindow::createWindow()
 {
-	m_window.create(sf::VideoMode({ m_width, m_height }), m_title, sf::Style::Default);
+	sf::ContextSettings settings;
+	settings.antiAliasingLevel = 8;
+	m_window.create(sf::VideoMode({ m_width, m_height }), m_title, sf::Style::Default, sf::State::Windowed, settings);
 	if (!m_window.isOpen())
 		return false;
 	m_window.setFramerateLimit(60);
@@ -194,7 +196,9 @@ GuiMainWindow::GuiMainWindow(unsigned int width, unsigned int height, const std:
 
 bool GuiMainWindow::createWindow()
 {
-	m_window.create(sf::VideoMode({ m_width, m_height }), m_title, sf::Style::None);
+	sf::ContextSettings settings;
+	settings.antiAliasingLevel = 8;
+	m_window.create(sf::VideoMode({ m_width, m_height }), m_title, sf::Style::None, sf::State::Windowed, settings);
 	if (!m_window.isOpen())
 		return false;
 	m_window.setFramerateLimit(60);
@@ -225,13 +229,13 @@ void GuiMainWindow::createMainWindowWidgets()
 	// Dark Rectangle background
 	sf::RectangleShape rect({ static_cast<float>(m_width), static_cast<float>(m_height) });
 	rect.setFillColor(Colors::Grey);
-	rect.setSize({ 900, 43 });
+	rect.setSize({ 900, 60 });
 	rect.setOrigin({ rect.getLocalBounds().getCenter().x, 0 });
-	rect.setPosition({ static_cast<float>(m_width) / 2, 80 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 72 });
 	backgroundCanvas->draw(rect);
-	rect.setPosition({ static_cast<float>(m_width) / 2, 170 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 162 });
 	backgroundCanvas->draw(rect);
-	rect.setPosition({ static_cast<float>(m_width) / 2, 260 });
+	rect.setPosition({ static_cast<float>(m_width) / 2, 252 });
 	backgroundCanvas->draw(rect);
 
 
