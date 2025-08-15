@@ -21,11 +21,17 @@ void Aras::initialise()
 
 	createMainWindow();
 
+	run();
+	
+	shutdown();
+}
 
+void Aras::run()
+{
 	while (true) {
 		if (m_stop)
 			return;
-		
+
 		if (m_windows.empty()) return;
 
 		for (auto& window : m_windows) {
@@ -36,25 +42,18 @@ void Aras::initialise()
 				window->render();
 			}
 		}
-		
+
 		m_windows.erase(std::remove_if(m_windows.begin(), m_windows.end(),
 			[](const std::unique_ptr<GuiWindow>& window) {
-					return !window->isOpen();
-				}), m_windows.end()
-		);
+				return !window->isOpen();
+			}), m_windows.end()
+				);
 
-		for (auto& win : newWindow) {
+		for (auto& win : newWindows) {
 			m_windows.push_back(std::move(win));
 		}
-		newWindow.clear();
+		newWindows.clear();
 	}
-
-	shutdown();
-}
-
-void Aras::run()
-{
-	//If you want to run the main loop in a separate thread, you can implement it here.
 }
 
 void Aras::shutdown()
@@ -74,6 +73,16 @@ void Aras::createMainWindow()
 	}
 }
 
+std::vector<std::string> Aras::getFIRs() const
+{
+	return m_dataManager->getFIRs();
+}
+
+std::vector<std::string> Aras::getAirports(const std::string& fir) const
+{
+	return m_dataManager->getAirportsList(fir);
+}
+
 void Aras::assignRunways()
 {
 	std::cout << "Assigning runways..." << std::endl;
@@ -84,7 +93,7 @@ void Aras::openSettings()
 {
 	std::unique_ptr<GuiWindow> settingWindow = std::make_unique<GuiSettingWindow>(500, 500, "Settings", this);
 	if (settingWindow->createWindow()) {
-	newWindow.push_back(std::move(settingWindow));
+	newWindows.push_back(std::move(settingWindow));
 	}
 	else {
 		std::cerr << "Failed to create Setting window." << std::endl;
@@ -96,23 +105,16 @@ void Aras::resetAirportsList()
 	std::cout << "Resetting airports list..." << std::endl;
 }
 
-void Aras::saveToken()
+void Aras::saveToken(const std::string& token)
 {
-	std::cout << "Saving token..." << std::endl;
+	m_dataManager->updateToken(token);
 }
 
 void Aras::setStatus()
 {
 }
 
-void Aras::OnFIRChangeEvent()
+void Aras::updateAirportsList(std::string fir, std::string airports)
 {
-	std::cout << "FIR change event triggered." << std::endl;
-	// Implement FIR change logic here
-}
-
-void Aras::updateAirportsList()
-{
-	std::cout << "Updating airports list..." << std::endl;
-	// Implement logic to update the airports list
+	m_dataManager->updateAirportsConfig(fir, airports);
 }

@@ -295,13 +295,19 @@ void GuiMainWindow::createMainWindowWidgets()
 	// Token Entry
 	m_tokenEntry = tgui::EditBox::create();
 	m_tokenEntry->setSize({ 710, 30 });
-	m_tokenEntry->setDefaultText("Enter API token");
+	std::string token = m_aras->getTokenConfig();
+	if (!token.empty()) {
+		m_tokenEntry->setText(token);
+	}
+	else {
+		m_tokenEntry->setDefaultText("Enter API token");
+	}
 	m_tokenEntry->setPasswordCharacter('*');
 	m_tokenEntry->setTextSize(20);
 	m_tokenEntry->getRenderer()->setRoundedBorderRadius(10);
 	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
 	m_tokenEntry->onReturnOrUnfocus([this] {
-		m_aras->saveToken();
+		m_aras->saveToken(m_tokenEntry->getText().toStdString());
 		});
 	m_row2->add(m_tokenEntry);
 	m_verticalLayout->add(m_row2);
@@ -325,26 +331,38 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_firSelector = tgui::ComboBox::create();
 	m_firSelector->setSize({ 100, 30 });
 	m_firSelector->setTextSize(20);
-	m_firSelector->addItem("LFBB");
-	m_firSelector->addItem("LFFF");
-	m_firSelector->addItem("LFMM");
-	m_firSelector->setSelectedItemByIndex(0);
+	std::vector<std::string> firs = m_aras->getFIRs();
+	if (firs.empty()) {
+		m_firSelector->addItem("No FIRs available");
+	}
+	else {
+		for (const auto& fir : firs) {
+			m_firSelector->addItem(fir);
+		}
+		m_firSelector->setSelectedItemByIndex(0);
+	}
 	m_firSelector->getRenderer()->setRoundedBorderRadius(10);
 	m_firSelector->setMouseCursor(tgui::Cursor::Type::Hand);
 	m_firSelector->onItemSelect([this] {
-		m_aras->OnFIRChangeEvent();
+		std::string selectedFIR = m_firSelector->getSelectedItem().toStdString();
+		updateAirportListWidget(selectedFIR);
 		});
 	m_row3->add(m_firSelector);
 
 	// Airport List
 	m_airportList = tgui::EditBox::create();
 	m_airportList->setSize({ 500, 30 });
-	m_airportList->setDefaultText("Enter airport ICAOs (comma separated)");
+	if (firs.empty()) {
+		m_airportList->setDefaultText("No FIRs available");
+	}
+	else {
+		updateAirportListWidget(firs[0]);
+	}
 	m_airportList->setTextSize(20);
 	m_airportList->getRenderer()->setRoundedBorderRadius(10);
 	m_airportList->setMouseCursor(tgui::Cursor::Type::Text);
 	m_airportList->onReturnOrUnfocus([this] {
-		m_aras->updateAirportsList();
+		m_aras->updateAirportsList(m_firSelector->getSelectedItem().toStdString(), m_airportList->getText().toStdString());
 		});
 	m_row3->add(m_airportList);
 
@@ -402,6 +420,21 @@ void GuiMainWindow::createMainWindowWidgets()
 
 
 	m_gui.add(m_verticalLayout);
+}
+
+void GuiMainWindow::updateAirportListWidget(std::string fir)
+{
+	std::vector<std::string> airports = m_aras->getAirports(fir);
+	std::string airportListText;
+	for (const auto& airport : airports) {
+		airportListText += airport + ", ";
+	}
+	if (!airportListText.empty()) {
+		// Remove the last comma and space
+		airportListText = airportListText.substr(0, airportListText.length() - 2);
+	}
+	m_airportList->setText(airportListText);
+
 }
 
 GuiSettingWindow::GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)

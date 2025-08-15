@@ -19,13 +19,15 @@ public:
 
 	void createMainWindow();
 
+	std::vector<std::string> getFIRs() const;
+	std::vector<std::string> getAirports(const std::string& fir) const;
+	std::string getTokenConfig() const { return m_dataManager->getToken(); }
 	void assignRunways();
 	void openSettings();
 	void resetAirportsList();
-	void saveToken();
+	void saveToken(const std::string& token);
 	void setStatus(); // Change return type accordingly
-	void OnFIRChangeEvent();
-	void updateAirportsList();
+	void updateAirportsList(std::string fir, std::string airports);
 
 
 private:
@@ -34,6 +36,6 @@ private:
 	bool m_stop = false;
 
 	std::vector<std::unique_ptr<GuiWindow>> m_windows;
-	std::vector<std::unique_ptr<GuiWindow>> newWindow;
+	std::vector<std::unique_ptr<GuiWindow>> newWindows;
 	
 };
