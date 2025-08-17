@@ -6,7 +6,6 @@ C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Except
       C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
       see declaration of 'sf::Exception'
   
-  DataManager.cpp
   GuiWindow.cpp
 C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
   (compiling source file 'GuiWindow.cpp')
