@@ -1,7 +1,7 @@
 .vs/
 ARAS/x64/
 ARAS/Debug/
-ARAS/x64/Debug/ARAS.pdb
-ARAS/x64/Release/ARAS.pdb
-ARAS/x64/Debug/ARAS.exe
-ARAS/x64/Release/ARAS.exe
+x64/Debug/ARAS.pdb
+x64/Release/ARAS.pdb
+x64/Debug/ARAS.exe
+x64/Release/ARAS.exe
