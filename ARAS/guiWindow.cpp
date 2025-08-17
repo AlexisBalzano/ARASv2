@@ -193,6 +193,7 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 {
 	tgui::Button::Ptr button = tgui::Button::create(buttonText);
 	button->setSize(size);
+	button->setTextSize(18);
 	button->setPosition(position);
 	button->getRenderer()->setTextColor(colors.text);
 	button->getRenderer()->setTextColorHover(colors.textHover);
