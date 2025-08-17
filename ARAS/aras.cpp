@@ -118,3 +118,8 @@ void Aras::updateAirportsList(std::string fir, std::string airports)
 {
 	m_dataManager->updateAirportsConfig(fir, airports);
 }
+
+void Aras::saveRwyLocation(const std::filesystem::path path)
+{
+	m_dataManager->updateRwyLocation(path);
+}

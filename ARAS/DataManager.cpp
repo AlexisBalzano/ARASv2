@@ -71,6 +71,14 @@ bool DataManager::parseConfigFile()
 	try {
 		configFile >> m_configJson;
 		configFile.close();
+		if (m_configJson.contains("apitoken")) {
+			m_token = m_configJson["apitoken"].get<std::string>();
+		}
+		if (m_configJson.contains("outputPath")) {
+			if (!m_configJson["outputPath"].is_null()) {
+				m_rwyFilePath = m_configJson["outputPath"].get<std::filesystem::path>();
+			}
+		}
 		return true;
 	}
 	catch (const std::exception& e) {
@@ -183,6 +191,19 @@ void DataManager::updateToken(const std::string& token)
 	m_configJson["tokenValidity"] = false;
 	if (!outputConfig()) {
 		std::cout << "Failed to update token in config file." << std::endl;
+	}
+}
+
+void DataManager::updateRwyLocation(const std::filesystem::path& path)
+{
+	if (path.empty() || !std::filesystem::exists(path)) {
+		std::cout << "Invalid runway location path." << std::endl;
+		return;
+	}
+	m_rwyFilePath = path;
+	m_configJson["outputPath"] = m_rwyFilePath.string();
+	if (!outputConfig()) {
+		std::cout << "Failed to update runway location in config file." << std::endl;
 	}
 }
 

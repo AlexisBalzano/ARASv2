@@ -16,11 +16,13 @@ public:
 
 	void updateAirportsConfig(const std::string& fir, std::string airports);
 	void updateToken(const std::string& token);
+	void updateRwyLocation(const std::filesystem::path& path);
 
 	std::vector<std::string> getAirportsList(const std::string& fir) const;
 	std::vector<std::string> getDefaultAirportsList(const std::string& fir) const;
 	std::vector<std::string> getFIRs() const;
 	std::string getToken() const { return m_token; }
+	std::filesystem::path getRwyFilePath() const { return m_rwyFilePath; }
 	
 private:
 	std::filesystem::path m_configPath;

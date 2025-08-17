@@ -1,12 +1,4 @@
-﻿  Aras.cpp
-C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
-  (compiling source file 'Aras.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
-      see declaration of 'std::runtime_error'
-      C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
-      see declaration of 'sf::Exception'
-  
-  GuiWindow.cpp
+﻿  GuiWindow.cpp
 C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
   (compiling source file 'GuiWindow.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
@@ -18,13 +10,4 @@ C:\Users\alexi\Documents\ARAS Dev\ARAS\GuiWindow.cpp(79,20): warning C4834: disc
 C:\Users\alexi\Documents\ARAS Dev\ARAS\GuiWindow.cpp(83,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\alexi\Documents\ARAS Dev\ARAS\GuiWindow.cpp(314,29): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Users\alexi\Documents\ARAS Dev\ARAS\GuiWindow.cpp(380,29): warning C4305: 'argument': truncation from 'double' to 'float'
-  Main.cpp
-C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
-  (compiling source file 'Main.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
-      see declaration of 'std::runtime_error'
-      C:\Users\alexi\Documents\ARAS Dev\External\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
-      see declaration of 'sf::Exception'
-  
-  Generating Code...
   ARAS.vcxproj -> C:\Users\alexi\Documents\ARAS Dev\x64\Debug\ARAS.exe

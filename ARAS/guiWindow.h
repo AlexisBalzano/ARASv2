@@ -102,8 +102,11 @@ private:
 
 	tgui::Button::Ptr m_settingsButton;
 
-	POINT clickOffset_{};
+	tgui::FileDialog::Ptr m_fileDialog;
 
+#ifdef _WIN32
+	POINT clickOffset_{};
+#endif // _WIN32
 };
 
 class GuiSettingWindow : public GuiWindow {

@@ -385,6 +385,26 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_row4->setSize({ m_width * 0.9f, m_height * 0.16f });
 	m_row4->getRenderer()->setPadding({ 20, 0, 20, 0 });
 
+	// File Dialog
+	m_fileDialog = tgui::FileDialog::create("Open file", "Open");
+	m_fileDialog->setTitle("Choose .rwy location");
+	m_fileDialog->setMultiSelect(false);
+	tgui::Filesystem::Path rwyLocation(m_aras->getRwyFilePath().parent_path().string());
+	if (!rwyLocation.isEmpty() && std::filesystem::exists(rwyLocation)) {
+		m_fileDialog->setPath(rwyLocation);
+	} else {
+		m_fileDialog->setPath(tgui::Filesystem::getHomeDirectory());
+	}
+	m_fileDialog->setFileTypeFilters({ {".rwy", {"*.rwy"}}, {"All files", {}} }, 1);
+	m_fileDialog->setSize({ m_width * 0.7f, m_height * 0.6f });
+	m_fileDialog->setPosition({ m_width * 0.15f, m_height * 0.2f });
+	m_fileDialog->onFileSelect([this](const tgui::Filesystem::Path& path) {
+		std::cerr << path.asString() << "\n";
+		m_aras->saveRwyLocation(path);
+		m_fileDialog->setPath(path.getParentPath());
+		m_gui.remove(m_fileDialog);
+		});
+
 	// Rwy location Button
 	ButtonColors arasButtonColors;
 	arasButtonColors.background = Colors::Blue;
@@ -392,8 +412,11 @@ void GuiMainWindow::createMainWindowWidgets()
 	arasButtonColors.backgroundHover = Colors::Yellow;
 	arasButtonColors.textHover = tgui::Color::Black;
 	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
-	// OnClick inside GUI
+	m_rwyLocationButton->onClick([this] {
+		m_gui.add(m_fileDialog);
+		});
 	m_row4->add(m_rwyLocationButton);
+
 
 	// Runway Assign Button
 	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
