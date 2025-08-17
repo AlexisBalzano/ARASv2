@@ -517,13 +517,13 @@ void GuiMainWindow::setTokenStatusUnset()
 
 void GuiMainWindow::setRwyStatusFound()
 {
-	m_rwyStatusText->setText("rwyData.json found");
+	m_rwyStatusText->setText("rwydata.json found");
 	m_rwyStatusText->getRenderer()->setTextColor(Colors::Green);
 }
 
 void GuiMainWindow::setRwyStatusNotFound()
 {
-	m_rwyStatusText->setText("rwyData.json not found");
+	m_rwyStatusText->setText("rwydata.json not found");
 	m_rwyStatusText->getRenderer()->setTextColor(tgui::Color::Red);
 }
 
