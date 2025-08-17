@@ -399,9 +399,10 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_fileDialog->setSize({ m_width * 0.7f, m_height * 0.6f });
 	m_fileDialog->setPosition({ m_width * 0.15f, m_height * 0.2f });
 	m_fileDialog->onFileSelect([this](const tgui::Filesystem::Path& path) {
-		std::cerr << path.asString() << "\n";
 		m_aras->saveRwyLocation(path);
 		m_fileDialog->setPath(path.getParentPath());
+		m_rwyLocationButton->getRenderer()->setBackgroundColor(Colors::Green);
+		m_rwyLocationButton->setText(".rwy Location Set");
 		m_gui.remove(m_fileDialog);
 		});
 
@@ -412,6 +413,10 @@ void GuiMainWindow::createMainWindowWidgets()
 	arasButtonColors.backgroundHover = Colors::Yellow;
 	arasButtonColors.textHover = tgui::Color::Black;
 	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
+	if (!m_aras->getRwyFilePath().empty()) {
+		m_rwyLocationButton->setText(".rwy Location Set");
+		m_rwyLocationButton->getRenderer()->setBackgroundColor(Colors::Green);
+	}
 	m_rwyLocationButton->onClick([this] {
 		m_gui.add(m_fileDialog);
 		});

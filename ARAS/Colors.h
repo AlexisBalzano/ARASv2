@@ -12,4 +12,5 @@ public:
 	static inline const tgui::Color LightRed{ 59, 160, 47 };
 	static inline const tgui::Color Blue{ 122, 145, 201 };
 	static inline const tgui::Color Yellow{ 252, 254, 87 };
+	static inline const tgui::Color Green{ 59, 160, 47 };
 };
