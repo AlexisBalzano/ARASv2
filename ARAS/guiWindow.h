@@ -79,7 +79,7 @@ public:
 	
 	bool createWindow() override;
 	void createMainWindowWidgets();
-	void updateAirportListWidget(std::string fir);
+	void updateAirportListWidget(std::string fir, bool def);
 
 private:
 	tgui::VerticalLayout::Ptr m_verticalLayout;

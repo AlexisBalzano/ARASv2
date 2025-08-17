@@ -227,7 +227,7 @@ std::vector<std::string> DataManager::getAirportsList(const std::string& fir) co
 
 std::vector<std::string> DataManager::getDefaultAirportsList(const std::string& fir) const
 {
-	return std::vector<std::string>();
+	return getAirportsList(fir + "def");
 }
 
 std::vector<std::string> DataManager::getFIRs() const
@@ -235,6 +235,9 @@ std::vector<std::string> DataManager::getFIRs() const
 	std::vector<std::string> firs;
 	if (m_configJson.contains("FIR") && m_configJson["FIR"].is_object()) {
 		for (auto it = m_configJson["FIR"].begin(); it != m_configJson["FIR"].end(); ++it) {
+			if (it.key().substr(it.key().size() - 3) == "def") {
+				continue;
+			}
 			firs.push_back(it.key());
 		}
 	}

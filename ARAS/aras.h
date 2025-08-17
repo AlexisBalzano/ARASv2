@@ -21,6 +21,7 @@ public:
 
 	std::vector<std::string> getFIRs() const;
 	std::vector<std::string> getAirports(const std::string& fir) const;
+	std::vector<std::string> getDefaultAirports(const std::string& fir) const;
 	std::string getTokenConfig() const { return m_dataManager->getToken(); }
 
 	void assignRunways();

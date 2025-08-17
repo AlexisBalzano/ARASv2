@@ -83,6 +83,11 @@ std::vector<std::string> Aras::getAirports(const std::string& fir) const
 	return m_dataManager->getAirportsList(fir);
 }
 
+std::vector<std::string> Aras::getDefaultAirports(const std::string& fir) const
+{
+	return m_dataManager->getDefaultAirportsList(fir);
+}
+
 void Aras::assignRunways()
 {
 	std::cout << "Assigning runways..." << std::endl;

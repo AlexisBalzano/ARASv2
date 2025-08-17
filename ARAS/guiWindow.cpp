@@ -345,7 +345,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_firSelector->setMouseCursor(tgui::Cursor::Type::Hand);
 	m_firSelector->onItemSelect([this] {
 		std::string selectedFIR = m_firSelector->getSelectedItem().toStdString();
-		updateAirportListWidget(selectedFIR);
+		updateAirportListWidget(selectedFIR, false);
 		});
 	m_row3->add(m_firSelector);
 
@@ -356,7 +356,7 @@ void GuiMainWindow::createMainWindowWidgets()
 		m_airportList->setDefaultText("No FIRs available");
 	}
 	else {
-		updateAirportListWidget(firs[0]);
+		updateAirportListWidget(firs[0], false);
 	}
 	m_airportList->setTextSize(20);
 	m_airportList->getRenderer()->setRoundedBorderRadius(10);
@@ -373,7 +373,8 @@ void GuiMainWindow::createMainWindowWidgets()
 	resetButtonColors.text = tgui::Color::White;
 	m_resetButton = createButton("Reset", { m_width * 0.05f, m_height * 0.85f }, { 70, 30 }, resetButtonColors);
 	m_resetButton->onClick([this] {
-		m_aras->resetAirportsList();
+		updateAirportListWidget(m_firSelector->getSelectedItem().toStdString(), true);
+		m_aras->updateAirportsList(m_firSelector->getSelectedItem().toStdString(), m_airportList->getText().toStdString());
 		});
 	m_row3->add(m_resetButton);
 	m_verticalLayout->add(m_row3);
@@ -450,9 +451,11 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_gui.add(m_verticalLayout);
 }
 
-void GuiMainWindow::updateAirportListWidget(std::string fir)
+void GuiMainWindow::updateAirportListWidget(std::string fir, bool def=false)
 {
-	std::vector<std::string> airports = m_aras->getAirports(fir);
+	std::vector<std::string> airports;
+	if (def) airports = m_aras->getDefaultAirports(fir);
+	else airports = m_aras->getAirports(fir);
 	std::string airportListText;
 	for (const auto& airport : airports) {
 		airportListText += airport + ", ";
@@ -462,7 +465,6 @@ void GuiMainWindow::updateAirportListWidget(std::string fir)
 		airportListText = airportListText.substr(0, airportListText.length() - 2);
 	}
 	m_airportList->setText(airportListText);
-
 }
 
 GuiSettingWindow::GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
