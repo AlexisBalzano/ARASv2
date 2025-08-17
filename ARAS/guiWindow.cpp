@@ -273,10 +273,38 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_row1->getRenderer()->setPadding({ 20, 0, 20, 0 });
 	
 	// Status Text
-	m_statusText = tgui::Label::create("Status: Ready");
-	m_statusText->setTextSize(20);
-	m_statusText->getRenderer()->setTextColor(tgui::Color::Green);
-	m_row1->add(m_statusText);
+	tgui::Label::Ptr statusLabel = tgui::Label::create("Status:");
+	statusLabel->setTextSize(20);
+	statusLabel->getRenderer()->setTextColor(tgui::Color::White);
+	m_row1->add(statusLabel);
+
+	tgui::SeparatorLine::Ptr separator = tgui::SeparatorLine::create();
+	separator->setWidth(65.f);
+	separator->getRenderer()->setColor(tgui::Color::Transparent);
+	m_row1->add(separator);
+
+	m_rwyStatusText = tgui::Label::create("rwyData.json");
+	m_rwyStatusText->setTextSize(20);
+	if (m_aras->isRwyFileFound()) setRwyStatusFound();
+	else setRwyStatusNotFound();
+	m_row1->add(m_rwyStatusText);
+
+	m_confStatusText = tgui::Label::create("config.json");
+	m_confStatusText->setTextSize(20);
+	if (m_aras->isConfigFileFound()) setConfStatusFound();
+	else setConfStatusNotFound();
+	m_row1->add(m_confStatusText);
+
+	m_tokenStatusText = tgui::Label::create("API Token");
+	m_tokenStatusText->setTextSize(20);
+	if (m_aras->getTokenConfig().empty()) {
+		setTokenStatusUnset();
+	} else {
+		if (m_aras->getTokenValidity()) setTokenStatusVerified();
+		else setTokenStatusSet();
+	}
+	m_row1->add(m_tokenStatusText);
+
 	m_verticalLayout->add(m_row1);
 	m_verticalLayout->addSpace(1);
 	
@@ -309,6 +337,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
 	m_tokenEntry->onReturnOrUnfocus([this] {
 		m_aras->saveToken(m_tokenEntry->getText().toStdString());
+		setTokenStatusSet();
 		});
 	m_row2->add(m_tokenEntry);
 	m_verticalLayout->add(m_row2);
@@ -466,6 +495,48 @@ void GuiMainWindow::updateAirportListWidget(std::string fir, bool def=false)
 		airportListText = airportListText.substr(0, airportListText.length() - 2);
 	}
 	m_airportList->setText(airportListText);
+}
+
+void GuiMainWindow::setTokenStatusVerified()
+{
+	m_tokenStatusText->setText("API Token verified");
+	m_tokenStatusText->getRenderer()->setTextColor(Colors::Green);
+}
+
+void GuiMainWindow::setTokenStatusSet()
+{
+	m_tokenStatusText->setText("API Token set");
+	m_tokenStatusText->getRenderer()->setTextColor(Colors::Yellow);
+}
+
+void GuiMainWindow::setTokenStatusUnset()
+{
+	m_tokenStatusText->setText("No API Token set");
+	m_tokenStatusText->getRenderer()->setTextColor(Colors::LightGrey);
+}
+
+void GuiMainWindow::setRwyStatusFound()
+{
+	m_rwyStatusText->setText("rwyData.json found");
+	m_rwyStatusText->getRenderer()->setTextColor(Colors::Green);
+}
+
+void GuiMainWindow::setRwyStatusNotFound()
+{
+	m_rwyStatusText->setText("rwyData.json not found");
+	m_rwyStatusText->getRenderer()->setTextColor(tgui::Color::Red);
+}
+
+void GuiMainWindow::setConfStatusFound()
+{
+	m_confStatusText->setText("config.json found");
+	m_confStatusText->getRenderer()->setTextColor(Colors::Green);
+}
+
+void GuiMainWindow::setConfStatusNotFound()
+{
+	m_confStatusText->setText("config.json not found");
+	m_confStatusText->getRenderer()->setTextColor(tgui::Color::Red);
 }
 
 GuiSettingWindow::GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)

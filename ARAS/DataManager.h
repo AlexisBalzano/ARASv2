@@ -18,6 +18,8 @@ public:
 	void updateToken(const std::string& token);
 	void updateRwyLocation(const std::filesystem::path& path);
 
+	bool isTokenValid() const { return m_configJson.value("tokenValidity", false); }
+
 	std::vector<std::string> getAirportsList(const std::string& fir) const;
 	std::vector<std::string> getDefaultAirportsList(const std::string& fir) const;
 	std::vector<std::string> getFIRs() const;
@@ -30,4 +32,5 @@ private:
 	nlohmann::json m_configJson;
 	std::string m_token;
 	std::filesystem::path m_rwyFilePath;
+	std::filesystem::path m_rwyDataPath;
 };

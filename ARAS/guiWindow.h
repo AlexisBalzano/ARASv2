@@ -82,6 +82,17 @@ public:
 	void updateAirportListWidget(std::string fir, bool def);
 
 private:
+	void setTokenStatusVerified();
+	void setTokenStatusSet();
+	void setTokenStatusUnset();
+
+	void setRwyStatusFound();
+	void setRwyStatusNotFound();
+
+	void setConfStatusFound();
+	void setConfStatusNotFound();
+
+private:
 	tgui::VerticalLayout::Ptr m_verticalLayout;
 	tgui::GrowHorizontalLayout::Ptr m_row1;
 	tgui::GrowHorizontalLayout::Ptr m_row2;
@@ -89,7 +100,9 @@ private:
 	tgui::GrowHorizontalLayout::Ptr m_row4;
 	tgui::GrowHorizontalLayout::Ptr m_row5;
 
-	tgui::Label::Ptr m_statusText;
+	tgui::Label::Ptr m_tokenStatusText;
+	tgui::Label::Ptr m_confStatusText;
+	tgui::Label::Ptr m_rwyStatusText;
 
 	tgui::EditBox::Ptr m_tokenEntry;
 
