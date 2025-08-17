@@ -26,7 +26,7 @@ static std::string trim(const std::string& s) {
 
 DataManager::DataManager()
 {
-	m_configPath = GetConfigPath();
+	m_configPath = getConfigPath();
 	if (!parseConfigFile()) {
 		createDefaultConfig();
 	}
@@ -38,7 +38,7 @@ DataManager::~DataManager()
 	outputConfig();
 }
 
-std::filesystem::path DataManager::GetConfigPath()
+std::filesystem::path DataManager::getConfigPath()
 {
 #if defined(_WIN32)
 	PWSTR path = nullptr;

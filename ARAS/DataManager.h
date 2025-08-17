@@ -8,7 +8,7 @@ public:
 	DataManager();
 	~DataManager();
 	
-	std::filesystem::path GetConfigPath();
+	std::filesystem::path getConfigPath();
 	bool parseConfigFile();
 	void createDefaultConfig();
 	bool outputConfig();
@@ -32,5 +32,4 @@ private:
 	nlohmann::json m_configJson;
 	std::string m_token;
 	std::filesystem::path m_rwyFilePath;
-	std::filesystem::path m_rwyDataPath;
 };

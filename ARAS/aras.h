@@ -24,8 +24,8 @@ public:
 	std::vector<std::string> getDefaultAirports(const std::string& fir) const;
 	std::string getTokenConfig() const { return m_dataManager->getToken(); }
 	bool getTokenValidity() const { return m_dataManager->isTokenValid(); }
-	bool isRwyFileFound() const { return std::filesystem::exists(m_dataManager->getRwyFilePath() / "rwyData.json"); }
-	bool isConfigFileFound() const { return std::filesystem::exists(m_dataManager->GetConfigPath() / "config.json"); }
+	bool isRwyFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "rwydata.json"); }
+	bool isConfigFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "config.json"); }
 
 	void assignRunways();
 	void openSettings();
