@@ -88,16 +88,41 @@ std::vector<std::string> Aras::getDefaultAirports(const std::string& fir) const
 	return m_dataManager->getDefaultAirportsList(fir);
 }
 
-void Aras::assignRunways()
+void Aras::assignRunways(const std::string& fir)
 {
-	std::cout << "Assigning runways..." << std::endl;
-	// Implement runway assignment logic here
-	auto future = m_dataManager->getHTTPSresponseAsync("LFPG");
 	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-	future.get(); // Wait for the async operation to complete
+	std::cout << "Assigning runways fo FIR: " + fir << std::endl;
+	std::vector<std::string> airports = m_dataManager->getAirportsList(fir);
+	if (airports.empty()) {
+		std::cout << "No airports found for FIR: " << fir << std::endl;
+		return;
+	}
+
+	// Make async
+	std::vector<std::future<WindData>> windDataFutureList;
+	
+	for (const auto& airport : airports) {
+		windDataFutureList.emplace_back(m_dataManager->getWindData(airport));
+	}
+	
+	for (size_t i = 0; i < airports.size(); ++i) {
+		std::cout << "Processing airport: " << airports[i] << std::endl;
+		WindData windData = windDataFutureList[i].get(); // Wait for wind data to be ready
+		// process runway assignment logic here
+		// Check for invalid wind data (-1)
+		if (windData.windDirection == -1 || windData.windSpeed == -1) {
+			std::cout << "Invalid wind data for airport: " << airports[i] << std::endl;
+			continue; // Skip this airport
+		}
+		else {
+			std::cout << "Wind data for " << airports[i] << ": " << "Direction: " << windData.windDirection << ", Speed: " << windData.windSpeed << ", Gust: " << windData.windGust << std::endl;
+		}
+	}
+
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "Runway assignment completed in " << elapsed_seconds.count() << " seconds." << std::endl;
+
 }
 
 void Aras::openSettings()

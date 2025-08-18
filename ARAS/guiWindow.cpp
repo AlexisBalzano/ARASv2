@@ -490,7 +490,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	// Runway Assign Button
 	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
 	m_rwyAssignButton->onClick([this] {
-		m_aras->assignRunways();
+		m_aras->assignRunways(m_firSelector->getSelectedItem().toStdString());
 		if (m_aras->getTokenValidity()) setTokenStatusVerified();
 		else setTokenStatusInvalid();
 	});

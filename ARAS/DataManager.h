@@ -7,6 +7,12 @@
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include <httplib.h>
 
+struct WindData {
+	int windDirection;
+	int windSpeed;
+	int windGust;
+};
+
 class DataManager {
 public:
 	DataManager();
@@ -30,7 +36,7 @@ public:
 	std::vector<std::string> getFIRs() const;
 	std::string getToken() const { return m_token; }
 	std::filesystem::path getRwyFilePath() const { return m_rwyFilePath; }
-	std::future<void> getHTTPSresponseAsync(const std::string& oaci);
+	std::future<WindData> getWindData(const std::string& oaci);
 	
 private:
 	std::filesystem::path m_configPath;

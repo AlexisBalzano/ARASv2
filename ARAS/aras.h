@@ -28,7 +28,7 @@ public:
 	bool isRwyFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "rwydata.json"); }
 	bool isConfigFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "config.json"); }
 
-	void assignRunways();
+	void assignRunways(const std::string& fir);
 	void openSettings();
 	void resetAirportsList();
 	void saveToken(const std::string& token);

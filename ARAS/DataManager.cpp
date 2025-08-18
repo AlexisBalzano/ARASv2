@@ -257,27 +257,37 @@ std::vector<std::string> DataManager::getFIRs() const
 	return firs;
 }
 
-std::future<void> DataManager::getHTTPSresponseAsync(const std::string& oaci)
+std::future<WindData> DataManager::getWindData(const std::string& oaci)
 {
 	return std::async(std::launch::async, [this, oaci]() {
 		httplib::Client cli("https://avwx.rest");
-
 		httplib::Headers headers = {
 			{"Authorization", "BEARER " + m_token}
 		};
-
 		std::string apiEndpoint = "/api/metar/"; // Example endpoint
 		auto res = cli.Get(apiEndpoint + oaci, headers);
-
 		if (res) {
-			std::cerr << "HTTPS response status: " << res->status << std::endl;
 			if (res->status == 200) {
 				m_configJson["tokenValidity"] = true;
-				if( !outputConfig()) {
+				if (!outputConfig()) {
 					std::cerr << "Failed to update token validity in config file." << std::endl;
 				}
+
+				nlohmann::json responseJson;
+				try {
+					WindData windData{};
+					responseJson = nlohmann::json::parse(res->body);
+					windData.windDirection = responseJson["wind_direction"]["value"].is_null() ? 0 : responseJson["wind_direction"]["value"].get<int>();
+					windData.windSpeed = responseJson["wind_speed"].value("value", 0);
+					windData.windGust = responseJson["wind_gust"].is_null() ? 0 : responseJson["wind_gust"].value("value", 0);
+
+					return windData;
+				}
+				catch (const std::exception& e) {
+					std::cerr << "Error when parsing response: " << e.what() << std::endl;
+				}
 			}
-			std::cerr << "HTTPS response body: " << res->body << std::endl;
 		}
-		});
+		return WindData{ -1, -1, -1 }; // Return invalid values if request fails
+	});
 }
