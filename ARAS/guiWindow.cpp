@@ -1,12 +1,6 @@
 #include "GuiWindow.h"
 #include "Aras.h"
 
-#if defined(_WIN32)
-#include <windows.h>
-#elif defined(__linux__)
-#include <X11/Xlib.h>
-#endif
-
 GuiWindow::GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
 	: m_width(width), m_height(height), m_title(title), m_aras(aras)
 #ifdef _WIN32
@@ -486,7 +480,8 @@ void GuiMainWindow::createMainWindowWidgets()
 		m_rwyLocationButton->getRenderer()->setBackgroundColor(Colors::Green);
 	}
 	m_rwyLocationButton->onClick([this] {
-		m_gui.add(m_fileDialog);
+		if (-1 == m_gui.getWidgetIndex(m_fileDialog)) 		
+			m_gui.add(m_fileDialog);
 		});
 	m_row4->add(m_rwyLocationButton);
 
