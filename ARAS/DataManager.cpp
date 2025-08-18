@@ -211,6 +211,8 @@ void DataManager::addFIRconfig(const std::string& fir)
 	}
 	std::string firUpper = trim(fir);
 	m_configJson["FIR"][firUpper] = nlohmann::json::array();
+	m_configJson["FIR"][firUpper + "def"] = nlohmann::json::array();
+
 	if (!outputConfig()) {
 		std::cout << "Failed to add FIR configuration." << std::endl;
 	}

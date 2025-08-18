@@ -107,6 +107,7 @@ private:
 	tgui::EditBox::Ptr m_tokenEntry;
 
 	tgui::ComboBox::Ptr m_firSelector;
+	tgui::EditBox::Ptr m_addFIRInput;
 	tgui::EditBox::Ptr m_airportList;
 	tgui::Button::Ptr m_resetButton;
 

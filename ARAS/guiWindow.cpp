@@ -378,18 +378,24 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_firSelector->setExpandDirection(tgui::ComboBox::ExpandDirection::Down);
 	m_firSelector->onItemSelect([this] {
 		if (m_firSelector->getSelectedItem() == "Add FIR") {
-			tgui::EditBox::Ptr editBox = tgui::EditBox::create();
-			editBox->setDefaultText("FIR Name");
-			editBox->getRenderer()->setRoundedBorderRadius(10);
-			editBox->setSize({ 100, 40 });
-			editBox->setTextSize(20);
-			editBox->setPosition({ 225, 300 });
-			m_gui.add(editBox);
-			editBox->onReturnOrUnfocus([this, editBox]() {
-				std::string firName = editBox->getText().toStdString();
+			m_addFIRInput = tgui::EditBox::create();
+			m_addFIRInput->setDefaultText("FIR Name");
+			m_addFIRInput->getRenderer()->setRoundedBorderRadius(10);
+			m_addFIRInput->setSize({ 100, 40 });
+			m_addFIRInput->setTextSize(20);
+			m_addFIRInput->setPosition({ 225, 300 });
+			m_gui.add(m_addFIRInput);
+			m_addFIRInput->onReturnOrUnfocus([this]() {
+				std::string firName = m_addFIRInput->getText().toStdString();
+				if (firName.empty()) {
+					m_gui.remove(m_addFIRInput);
+					m_addFIRInput.reset();
+					return;
+				}
 				std::transform(firName.begin(), firName.end(), firName.begin(), ::toupper);
 				m_aras->addFIR(firName);
-				m_gui.remove(editBox);
+				m_gui.remove(m_addFIRInput);
+				m_addFIRInput.reset();
 				m_firSelector->removeAllItems();
 				std::vector<std::string> firs = m_aras->getFIRs();
 				for (const auto& fir : firs) {
@@ -400,6 +406,10 @@ void GuiMainWindow::createMainWindowWidgets()
 				});
 		}
 		else {
+			if (m_addFIRInput) {
+				m_gui.remove(m_addFIRInput);
+				m_addFIRInput.reset();
+			}
 			std::string selectedFIR = m_firSelector->getSelectedItem().toStdString();
 			updateAirportListWidget(selectedFIR, false);
 		}
