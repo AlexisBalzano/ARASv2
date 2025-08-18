@@ -30,7 +30,6 @@ DataManager::DataManager()
 	if (!parseConfigFile()) {
 		createDefaultConfig();
 	}
-	m_token = m_configJson.value("apitoken", "");
 }
 
 DataManager::~DataManager()
@@ -71,11 +70,9 @@ bool DataManager::parseConfigFile()
 	try {
 		configFile >> m_configJson;
 		configFile.close();
-		if (m_configJson.contains("apitoken")) {
-			m_token = m_configJson["apitoken"].get<std::string>();
-		}
+		m_token = m_configJson.value("apitoken", "");
 		if (m_configJson.contains("outputPath")) {
-			if (!m_configJson["outputPath"].is_null()) {
+			if (!m_configJson["outputPath"].get<std::string>().empty()) {
 				m_rwyFilePath = m_configJson["outputPath"].get<std::filesystem::path>();
 			}
 		}
@@ -93,9 +90,9 @@ void DataManager::createDefaultConfig()
 		std::filesystem::create_directories(m_configPath);
 	}
 	m_configJson = {
-		{"apitoken", nullptr},
+		{"apitoken", ""},
 		{"tokenValidity", false},
-		{"outputPath", nullptr},
+		{"outputPath", ""},
 		{"FIR", {}}
 	};
 	if (outputConfig()) {
@@ -204,6 +201,18 @@ void DataManager::updateRwyLocation(const std::filesystem::path& path)
 	m_configJson["outputPath"] = m_rwyFilePath.string();
 	if (!outputConfig()) {
 		std::cout << "Failed to update runway location in config file." << std::endl;
+	}
+}
+
+void DataManager::addFIRconfig(const std::string& fir)
+{
+	if (fir.empty() || m_configJson["FIR"].contains(fir)) {
+		return;
+	}
+	std::string firUpper = trim(fir);
+	m_configJson["FIR"][firUpper] = nlohmann::json::array();
+	if (!outputConfig()) {
+		std::cout << "Failed to add FIR configuration." << std::endl;
 	}
 }
 

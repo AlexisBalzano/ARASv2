@@ -17,6 +17,7 @@ public:
 	void updateAirportsConfig(const std::string& fir, std::string airports);
 	void updateToken(const std::string& token);
 	void updateRwyLocation(const std::filesystem::path& path);
+	void addFIRconfig(const std::string& fir);
 
 	bool isTokenValid() const { return m_configJson.value("tokenValidity", false); }
 
