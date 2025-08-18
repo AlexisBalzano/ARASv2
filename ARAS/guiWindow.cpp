@@ -228,11 +228,11 @@ bool GuiMainWindow::createWindow()
 	}
 	m_window.setIcon(m_icon);
 
-	if (!m_font.openFromFile("ressources/fonts/arial.ttf")) {
+	if (!m_font.openFromFile("ressources/fonts/font.ttf")) {
 		//LOG	
 	}
 
-	m_gui.setFont("ressources/fonts/arial.ttf");
+	m_gui.setFont("ressources/fonts/font.ttf");
 
 	createBaseWindowLayout("Automatic Runway Assignement System");
 	createMainWindowWidgets();
@@ -263,7 +263,7 @@ void GuiMainWindow::createMainWindowWidgets()
 
 	// Row 1
 	m_row1 = tgui::GrowHorizontalLayout::create();
-	m_row1->setSize({ m_width * 0.9f, m_height * 0.16f });
+	m_row1->setSize({ m_width * 1.f, m_height * 0.16f });
 	m_row1->getRenderer()->setPadding({ 20, 0, 20, 0 });
 	
 	// Status Text
@@ -291,6 +291,7 @@ void GuiMainWindow::createMainWindowWidgets()
 
 	m_tokenStatusText = tgui::Label::create("API Token");
 	m_tokenStatusText->setTextSize(20);
+	m_tokenStatusText->setWidth(200);
 	if (m_aras->getTokenConfig().empty()) {
 		setTokenStatusUnset();
 	} else {
@@ -490,6 +491,8 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
 	m_rwyAssignButton->onClick([this] {
 		m_aras->assignRunways();
+		if (m_aras->getTokenValidity()) setTokenStatusVerified();
+		else setTokenStatusInvalid();
 	});
 	m_row4->add(m_rwyAssignButton);
 	m_verticalLayout->add(m_row4);
@@ -539,6 +542,12 @@ void GuiMainWindow::setTokenStatusSet()
 {
 	m_tokenStatusText->setText("API Token set");
 	m_tokenStatusText->getRenderer()->setTextColor(Colors::Yellow);
+}
+
+void GuiMainWindow::setTokenStatusInvalid()
+{
+	m_tokenStatusText->setText("API Token invalid");
+	m_tokenStatusText->getRenderer()->setTextColor(tgui::Color::Red);
 }
 
 void GuiMainWindow::setTokenStatusUnset()

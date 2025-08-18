@@ -86,6 +86,7 @@ public:
 private:
 	void setTokenStatusVerified();
 	void setTokenStatusSet();
+	void setTokenStatusInvalid();
 	void setTokenStatusUnset();
 
 	void setRwyStatusFound();
