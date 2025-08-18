@@ -128,3 +128,8 @@ void Aras::saveRwyLocation(const std::filesystem::path path)
 {
 	m_dataManager->updateRwyLocation(path);
 }
+
+void Aras::addFIR(const std::string& fir)
+{
+	m_dataManager->addFIRconfig(fir);
+}

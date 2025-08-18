@@ -193,7 +193,7 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 {
 	tgui::Button::Ptr button = tgui::Button::create(buttonText);
 	button->setSize(size);
-	button->setTextSize(18);
+	button->setTextSize(16);
 	button->setPosition(position);
 	button->getRenderer()->setTextColor(colors.text);
 	button->getRenderer()->setTextColorHover(colors.textHover);
@@ -369,13 +369,40 @@ void GuiMainWindow::createMainWindowWidgets()
 		for (const auto& fir : firs) {
 			m_firSelector->addItem(fir);
 		}
-		m_firSelector->setSelectedItemByIndex(0);
 	}
+	m_firSelector->setSelectedItemByIndex(0);
+	m_firSelector->addItem("Add FIR");
 	m_firSelector->getRenderer()->setRoundedBorderRadius(10);
 	m_firSelector->setMouseCursor(tgui::Cursor::Type::Hand);
+	m_firSelector->setChangeItemOnScroll(true);
+	m_firSelector->setExpandDirection(tgui::ComboBox::ExpandDirection::Down);
 	m_firSelector->onItemSelect([this] {
-		std::string selectedFIR = m_firSelector->getSelectedItem().toStdString();
-		updateAirportListWidget(selectedFIR, false);
+		if (m_firSelector->getSelectedItem() == "Add FIR") {
+			tgui::EditBox::Ptr editBox = tgui::EditBox::create();
+			editBox->setDefaultText("FIR Name");
+			editBox->getRenderer()->setRoundedBorderRadius(10);
+			editBox->setSize({ 100, 40 });
+			editBox->setTextSize(20);
+			editBox->setPosition({ 225, 300 });
+			m_gui.add(editBox);
+			editBox->onReturnOrUnfocus([this, editBox]() {
+				std::string firName = editBox->getText().toStdString();
+				std::transform(firName.begin(), firName.end(), firName.begin(), ::toupper);
+				m_aras->addFIR(firName);
+				m_gui.remove(editBox);
+				m_firSelector->removeAllItems();
+				std::vector<std::string> firs = m_aras->getFIRs();
+				for (const auto& fir : firs) {
+					m_firSelector->addItem(fir);
+				}
+				m_firSelector->addItem("Add FIR");
+				m_firSelector->setSelectedItem(firName);
+				});
+		}
+		else {
+			std::string selectedFIR = m_firSelector->getSelectedItem().toStdString();
+			updateAirportListWidget(selectedFIR, false);
+		}
 		});
 	m_row3->add(m_firSelector);
 
