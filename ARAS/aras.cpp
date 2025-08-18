@@ -92,8 +92,12 @@ void Aras::assignRunways()
 {
 	std::cout << "Assigning runways..." << std::endl;
 	// Implement runway assignment logic here
-	auto future = m_dataManager->getHTTPSresponseAsync();
+	auto future = m_dataManager->getHTTPSresponseAsync("LFPG");
+	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 	future.get(); // Wait for the async operation to complete
+	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::cout << "Runway assignment completed in " << elapsed_seconds.count() << " seconds." << std::endl;
 }
 
 void Aras::openSettings()

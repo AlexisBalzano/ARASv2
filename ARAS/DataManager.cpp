@@ -257,26 +257,26 @@ std::vector<std::string> DataManager::getFIRs() const
 	return firs;
 }
 
-std::future<void> DataManager::getHTTPSresponseAsync()
+std::future<void> DataManager::getHTTPSresponseAsync(const std::string& oaci)
 {
-	return std::async(std::launch::async, [this]() {
-		// HTTPS
+	return std::async(std::launch::async, [this, oaci]() {
 		httplib::Client cli("https://avwx.rest");
 
-
-		//std::string token = m_token;
-		std::string token = "JDtPsPMNvXPPBS6x1ZL4rdKf9R0KN_BrE7z5rr7IvI8";
-
 		httplib::Headers headers = {
-			{"Authorization", "BEARER " + token}
+			{"Authorization", "BEARER " + m_token}
 		};
 
 		std::string apiEndpoint = "/api/metar/"; // Example endpoint
-		std::string oaci = "LFPG"; // Example ICAO code
 		auto res = cli.Get(apiEndpoint + oaci, headers);
 
 		if (res) {
 			std::cerr << "HTTPS response status: " << res->status << std::endl;
+			if (res->status == 200) {
+				m_configJson["tokenValidity"] = true;
+				if( !outputConfig()) {
+					std::cerr << "Failed to update token validity in config file." << std::endl;
+				}
+			}
 			std::cerr << "HTTPS response body: " << res->body << std::endl;
 		}
 		});

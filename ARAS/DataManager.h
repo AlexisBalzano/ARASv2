@@ -30,7 +30,7 @@ public:
 	std::vector<std::string> getFIRs() const;
 	std::string getToken() const { return m_token; }
 	std::filesystem::path getRwyFilePath() const { return m_rwyFilePath; }
-	std::future<void> getHTTPSresponseAsync();
+	std::future<void> getHTTPSresponseAsync(const std::string& oaci);
 	
 private:
 	std::filesystem::path m_configPath;
