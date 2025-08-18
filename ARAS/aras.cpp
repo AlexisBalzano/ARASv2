@@ -92,7 +92,7 @@ std::vector<std::string> Aras::getDefaultAirports(const std::string& fir) const
 void Aras::assignRunways(const std::string& fir)
 {
 	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-	std::cout << "Assigning runways fo FIR: " + fir << std::endl;
+	
 	std::vector<std::string> airports = m_dataManager->getAirportsList(fir);
 	if (airports.empty()) {
 		std::cout << "No airports found for FIR: " << fir << std::endl;
@@ -100,7 +100,6 @@ void Aras::assignRunways(const std::string& fir)
 	}
 
 	std::vector<std::future<WindData>> windDataFutureList;
-	
 	for (const auto& airport : airports) {
 		windDataFutureList.emplace_back(m_dataManager->getWindData(airport));
 	}
@@ -108,22 +107,18 @@ void Aras::assignRunways(const std::string& fir)
 	for (size_t i = 0; i < airports.size(); ++i) {
 		std::cout << "Processing airport: " << airports[i] << std::endl;
 		WindData windData = windDataFutureList[i].get(); // Wait for wind data to be ready
-		// process runway assignment logic here
-		// Check for invalid wind data (-1)
 		if (windData.windDirection == -1 || windData.windSpeed == -1) {
 			std::cout << "Invalid wind data for airport: " << airports[i] << std::endl;
 			continue; // Skip this airport
 		}
-		else {
-			std::cout << "Wind data for " << airports[i] << ": " << "Direction: " << windData.windDirection << ", Speed: " << windData.windSpeed << ", Gust: " << windData.windGust << std::endl;
-		}
+		// process runway assignment logic here
+		std::cout << "Wind data for " << airports[i] << ": " << "Direction: " << windData.windDirection << ", Speed: " << windData.windSpeed << ", Gust: " << windData.windGust << std::endl;
 	}
 
+	m_soundPlayer->playSound(SoundPlayer::completionSound);
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
-	m_soundPlayer->playSound(Sounds::completionSound);
 	std::cout << "Runway assignment completed in " << elapsed_seconds.count() << " seconds." << std::endl;
-
 }
 
 void Aras::openSettings()

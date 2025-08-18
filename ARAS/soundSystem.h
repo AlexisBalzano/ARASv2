@@ -9,11 +9,6 @@
 #pragma comment(lib, "winmm.lib")
 #endif // _WIN32
 
-
-namespace Sounds {
-		static const inline std::string completionSound = "ressources/sounds/Completion.wav";
-}
-
 class SoundPlayer {
 public:
 	SoundPlayer() = default;
@@ -21,6 +16,9 @@ public:
 
 	void playSound(const std::string& filePath);
 	void stopAllSounds();
+
+	// Sound file paths
+	static inline const std::string completionSound{ "ressources/sounds/Completion.wav" };
 };
 
 inline void SoundPlayer::playSound(const std::string& filePath) {
