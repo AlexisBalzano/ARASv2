@@ -157,7 +157,7 @@ bool DataManager::outputRunways(const std::vector<std::string> runways)
 void DataManager::updateAirportsConfig(const std::string& fir, std::string airports)
 {
 	if (!m_configJson["FIR"].contains(fir)) {
-		m_configJson["FIR"][fir] = nlohmann::json::array();
+		return;
 	}
 	nlohmann::json& firAirports = m_configJson["FIR"][fir];
 	std::vector<std::string> newAirports;
