@@ -1,7 +1,11 @@
 #pragma once
 #include <string>
 #include <filesystem>
+#include <future>
 #include <nlohmann/json.hpp>
+
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#include <httplib.h>
 
 class DataManager {
 public:
@@ -26,6 +30,7 @@ public:
 	std::vector<std::string> getFIRs() const;
 	std::string getToken() const { return m_token; }
 	std::filesystem::path getRwyFilePath() const { return m_rwyFilePath; }
+	std::future<void> getHTTPSresponseAsync();
 	
 private:
 	std::filesystem::path m_configPath;

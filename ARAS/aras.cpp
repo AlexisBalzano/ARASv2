@@ -92,6 +92,8 @@ void Aras::assignRunways()
 {
 	std::cout << "Assigning runways..." << std::endl;
 	// Implement runway assignment logic here
+	auto future = m_dataManager->getHTTPSresponseAsync();
+	future.get(); // Wait for the async operation to complete
 }
 
 void Aras::openSettings()

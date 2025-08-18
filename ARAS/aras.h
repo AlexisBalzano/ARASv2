@@ -2,7 +2,6 @@
 #include <vector>
 #include <Thread>
 
-
 #include "GuiWindow.h"
 #include "DataManager.h"
 

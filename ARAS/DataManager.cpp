@@ -6,6 +6,8 @@
 #include <sstream>
 
 #ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <WinSock2.h>
 #include <windows.h>
 #include <shlobj.h>
 #include <knownfolders.h>
@@ -253,4 +255,29 @@ std::vector<std::string> DataManager::getFIRs() const
 		}
 	}
 	return firs;
+}
+
+std::future<void> DataManager::getHTTPSresponseAsync()
+{
+	return std::async(std::launch::async, [this]() {
+		// HTTPS
+		httplib::Client cli("https://avwx.rest");
+
+
+		//std::string token = m_token;
+		std::string token = "JDtPsPMNvXPPBS6x1ZL4rdKf9R0KN_BrE7z5rr7IvI8";
+
+		httplib::Headers headers = {
+			{"Authorization", "BEARER " + token}
+		};
+
+		std::string apiEndpoint = "/api/metar/"; // Example endpoint
+		std::string oaci = "LFPG"; // Example ICAO code
+		auto res = cli.Get(apiEndpoint + oaci, headers);
+
+		if (res) {
+			std::cerr << "HTTPS response status: " << res->status << std::endl;
+			std::cerr << "HTTPS response body: " << res->body << std::endl;
+		}
+		});
 }
