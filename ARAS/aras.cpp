@@ -123,9 +123,16 @@ void Aras::assignRunways(const std::string& fir)
 
 void Aras::openSettings()
 {
+	for (const auto& window : m_windows) {
+		if (window->getTitle() == "Settings") {
+			// Bring the existing settings window to the front
+			window->focus();
+			return;
+		}
+	}
 	std::unique_ptr<GuiWindow> settingWindow = std::make_unique<GuiSettingWindow>(500, 500, "Settings", this);
 	if (settingWindow->createWindow()) {
-	newWindows.push_back(std::move(settingWindow));
+		newWindows.push_back(std::move(settingWindow));
 	}
 	else {
 		std::cerr << "Failed to create Setting window." << std::endl;
@@ -140,10 +147,6 @@ void Aras::resetAirportsList()
 void Aras::saveToken(const std::string& token)
 {
 	m_dataManager->updateToken(token);
-}
-
-void Aras::setStatus()
-{
 }
 
 void Aras::updateAirportsList(std::string fir, std::string airports)

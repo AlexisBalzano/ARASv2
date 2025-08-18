@@ -41,6 +41,7 @@ public:
 	std::optional<sf::Event> pollWindowEvent();
 	virtual void processEvents(const sf::Event& event);
 	void render();
+	void focus() const;
 	bool isOpen() const;
 	std::string getTitle() const { return m_title; }
 
@@ -50,6 +51,7 @@ public:
 
 protected:
 	tgui::Button::Ptr createButton(const std::string& buttonText, tgui::Vector2f position, tgui::Vector2f size, ButtonColors colors);
+	void loadDependencies();
 
 
 protected:

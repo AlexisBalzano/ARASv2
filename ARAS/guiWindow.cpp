@@ -163,6 +163,13 @@ void GuiWindow::render()
 	m_window.display();
 }
 
+void GuiWindow::focus() const
+{
+#ifdef _WIN32
+	SetForegroundWindow(m_hwnd);
+#endif
+}
+
 bool GuiWindow::isOpen() const
 {
 	if (m_window.isOpen())
@@ -187,7 +194,7 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 {
 	tgui::Button::Ptr button = tgui::Button::create(buttonText);
 	button->setSize(size);
-	button->setTextSize(16);
+	button->setTextSize(14);
 	button->setPosition(position);
 	button->getRenderer()->setTextColor(colors.text);
 	button->getRenderer()->setTextColorHover(colors.textHover);
@@ -222,18 +229,7 @@ bool GuiMainWindow::createWindow()
 	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
 #endif
 
-	// Loading dependencies
-	if (m_icon.loadFromFile("ressources/images/icon.png")) {
-		//LOG
-	}
-	m_window.setIcon(m_icon);
-
-	if (!m_font.openFromFile("ressources/fonts/font.ttf")) {
-		//LOG	
-	}
-
-	m_gui.setFont("ressources/fonts/font.ttf");
-
+	loadDependencies();
 	createBaseWindowLayout("Automatic Runway Assignement System");
 	createMainWindowWidgets();
 
@@ -246,7 +242,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	// Dark Rectangle background
 	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) }, 10);
 	rect.setFillColor(Colors::Grey);
-	rect.setSize({ 900, 60 });
+	rect.setSize({ 950, 60 });
 	rect.setOrigin(rect.getLocalBounds().getCenter());
 	rect.setPosition({ static_cast<float>(m_width) / 2, 102 });
 	backgroundCanvas->draw(rect);
@@ -263,35 +259,33 @@ void GuiMainWindow::createMainWindowWidgets()
 
 	// Row 1
 	m_row1 = tgui::GrowHorizontalLayout::create();
-	m_row1->setSize({ m_width * 1.f, m_height * 0.16f });
+	m_row1->setSize({ m_width * 0.9f, m_height * 0.16f });
 	m_row1->getRenderer()->setPadding({ 20, 0, 20, 0 });
 	
 	// Status Text
 	tgui::Label::Ptr statusLabel = tgui::Label::create("Status:");
 	statusLabel->setTextSize(20);
+	statusLabel->setWidth(85);
 	statusLabel->getRenderer()->setTextColor(tgui::Color::White);
 	m_row1->add(statusLabel);
 
-	tgui::SeparatorLine::Ptr separator = tgui::SeparatorLine::create();
-	separator->setWidth(65.f);
-	separator->getRenderer()->setColor(tgui::Color::Transparent);
-	m_row1->add(separator);
-
 	m_rwyStatusText = tgui::Label::create("rwyData.json");
 	m_rwyStatusText->setTextSize(20);
+	m_rwyStatusText->setWidth(260);
 	if (m_aras->isRwyFileFound()) setRwyStatusFound();
 	else setRwyStatusNotFound();
 	m_row1->add(m_rwyStatusText);
 
 	m_confStatusText = tgui::Label::create("config.json");
 	m_confStatusText->setTextSize(20);
+	m_confStatusText->setWidth(260);
 	if (m_aras->isConfigFileFound()) setConfStatusFound();
 	else setConfStatusNotFound();
 	m_row1->add(m_confStatusText);
 
 	m_tokenStatusText = tgui::Label::create("API Token");
 	m_tokenStatusText->setTextSize(20);
-	m_tokenStatusText->setWidth(200);
+	m_tokenStatusText->setWidth(260);
 	if (m_aras->getTokenConfig().empty()) {
 		setTokenStatusUnset();
 	} else {
@@ -312,8 +306,9 @@ void GuiMainWindow::createMainWindowWidgets()
 	// Token Label
 	tgui::Label::Ptr tokenLabel = tgui::Label::create("API Token: ");
 	tokenLabel->setTextSize(20);
+	tokenLabel->setWidth(150);
 	tokenLabel->getRenderer()->setTextColor(tgui::Color::White);
-	tokenLabel->getRenderer()->setPadding({ 0, 8, 25, 0 });
+	tokenLabel->getRenderer()->setPadding({ 0, 8, 10, 0 });
 	m_row2->add(tokenLabel);
 
 	// Token Entry
@@ -348,6 +343,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	// FIR Airport Label
 	tgui::Label::Ptr firAirportLabel = tgui::Label::create("FIR Airports: ");
 	firAirportLabel->setTextSize(20);
+	firAirportLabel->setWidth(150);
 	firAirportLabel->getRenderer()->setTextColor(tgui::Color::White);
 	firAirportLabel->getRenderer()->setPadding({ 0, 8, 0, 0 });
 	m_row3->add(firAirportLabel);
@@ -532,6 +528,21 @@ void GuiMainWindow::updateAirportListWidget(std::string fir, bool def=false)
 	m_airportList->setText(airportListText);
 }
 
+void GuiWindow::loadDependencies()
+{
+	// Loading dependencies
+	if (m_icon.loadFromFile("ressources/images/icon.png")) {
+		//LOG
+	}
+	m_window.setIcon(m_icon);
+
+	if (!m_font.openFromFile("ressources/fonts/font.ttf")) {
+		//LOG	
+	}
+
+	m_gui.setFont("ressources/fonts/font.ttf");
+}
+
 void GuiMainWindow::setTokenStatusVerified()
 {
 	m_tokenStatusText->setText("API Token verified");
@@ -600,21 +611,9 @@ bool GuiSettingWindow::createWindow()
 	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
 #endif
 
-	// Loading dependencies
-	if (m_icon.loadFromFile("ressources/images/icon.png")) {
-		//LOG
-	}
-	m_window.setIcon(m_icon);
-
-	if (!m_font.openFromFile("ressources/fonts/arial.ttf")) {
-		//LOG	
-	}
-
-	m_gui.setFont("ressources/fonts/arial.ttf");
-	
+	loadDependencies();
 	createBaseWindowLayout("Settings");
 	createSettingsWindowWidgets();
-
 
 	return true;
 }

@@ -33,7 +33,6 @@ public:
 	void openSettings();
 	void resetAirportsList();
 	void saveToken(const std::string& token);
-	void setStatus(); // Change return type accordingly
 	void updateAirportsList(std::string fir, std::string airports);
 	void saveRwyLocation(const std::filesystem::path path);
 	void addFIR(const std::string& fir);
