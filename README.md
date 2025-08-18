@@ -1,6 +1,7 @@
 # Automatic Runway Assignement System v2
 
-<img width="1005" height="505" alt="image" src="https://github.com/user-attachments/assets/ee9b9a39-c204-494f-960e-66493843a48a" />
+<img width="1000" height="499" alt="image" src="https://github.com/user-attachments/assets/84f9f70c-03fe-4cdc-b7e4-91f5854edea8" />
+
 
 ## Introduction
 This software is used to assign automatically euroscope runways according to a database referencing preferential runway as well as using real-time weather data.
