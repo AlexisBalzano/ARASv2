@@ -9,12 +9,10 @@
 
 GuiWindow::GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
 	: m_width(width), m_height(height), m_title(title), m_aras(aras)
-{
 #ifdef _WIN32
-	m_dragging = false;
-	m_hwnd = nullptr;
+	, m_dragging(false), m_hwnd(nullptr), m_clickOffset{ 0, 0 }
 #endif
-}
+{}
 
 GuiWindow::~GuiWindow()
 {
@@ -76,15 +74,17 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 	float dragAreaHeight = 30;
 
 	// Icon
-	iconTexture.resize({ m_icon.getSize().x, m_icon.getSize().y });
-	iconTexture.update(m_icon);
-	iconTexture.setSmooth(true);
-	sf::Sprite iconSprite(iconTexture);
-	float scale = dragAreaHeight * 0.7 / static_cast<float>(m_icon.getSize().x);
-	iconSprite.setScale({ scale, scale });
-	iconSprite.setOrigin(iconSprite.getLocalBounds().getCenter());
-	iconSprite.setPosition({ dragAreaHeight / 2, dragAreaHeight / 2 });
-	m_drawables.push_back(std::move(std::make_unique<sf::Sprite>(iconSprite)));
+	bool success = iconTexture.resize({ m_icon.getSize().x, m_icon.getSize().y });
+	if (success) {
+		iconTexture.update(m_icon);
+		iconTexture.setSmooth(true);
+		sf::Sprite iconSprite(iconTexture);
+		float scale = dragAreaHeight * 0.7f / static_cast<float>(m_icon.getSize().x);
+		iconSprite.setScale({ scale, scale });
+		iconSprite.setOrigin(iconSprite.getLocalBounds().getCenter());
+		iconSprite.setPosition({ dragAreaHeight / 2, dragAreaHeight / 2 });
+		m_drawables.push_back(std::move(std::make_unique<sf::Sprite>(iconSprite)));
+	}
 
 	// Title Text
 	sf::Text titleText(m_font, title, 25);
@@ -341,7 +341,7 @@ void GuiMainWindow::createMainWindowWidgets()
 		});
 	m_row2->add(m_tokenEntry);
 	m_verticalLayout->add(m_row2);
-	m_verticalLayout->addSpace(1.2);
+	m_verticalLayout->addSpace(1.2f);
 
 
 	// Row 3
@@ -445,7 +445,7 @@ void GuiMainWindow::createMainWindowWidgets()
 		});
 	m_row3->add(m_resetButton);
 	m_verticalLayout->add(m_row3);
-	m_verticalLayout->addSpace(1.2);
+	m_verticalLayout->addSpace(1.2f);
 
 
 	// Row 4

@@ -68,7 +68,7 @@ protected:
 #ifdef _WIN32
 	HWND m_hwnd = nullptr;
 	bool m_dragging = false;
-	POINT m_clickOffset;
+	POINT m_clickOffset{};
 #endif
 
 };
@@ -117,10 +117,6 @@ private:
 	tgui::Button::Ptr m_settingsButton;
 
 	tgui::FileDialog::Ptr m_fileDialog;
-
-#ifdef _WIN32
-	POINT clickOffset_{};
-#endif // _WIN32
 };
 
 class GuiSettingWindow : public GuiWindow {
@@ -131,5 +127,4 @@ public:
 
 private:
 	tgui::VerticalLayout::Ptr m_verticalLayout;
-	POINT clickOffset_{};
 };
