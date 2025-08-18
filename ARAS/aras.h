@@ -4,6 +4,7 @@
 
 #include "GuiWindow.h"
 #include "DataManager.h"
+#include "SoundSystem.h"
 
 
 class Aras {
@@ -39,6 +40,7 @@ public:
 
 private:
 	std::unique_ptr<DataManager> m_dataManager;
+	std::unique_ptr<SoundPlayer> m_soundPlayer;
 	std::thread m_renderThread;
 	bool m_stop = false;
 

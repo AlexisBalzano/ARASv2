@@ -18,6 +18,7 @@ void Aras::initialise()
 	//m_renderThread = std::thread(&Aras::run, this);
 
 	m_dataManager = std::make_unique<DataManager>();
+	m_soundPlayer = std::make_unique<SoundPlayer>();
 
 	createMainWindow();
 
@@ -98,7 +99,6 @@ void Aras::assignRunways(const std::string& fir)
 		return;
 	}
 
-	// Make async
 	std::vector<std::future<WindData>> windDataFutureList;
 	
 	for (const auto& airport : airports) {
@@ -121,6 +121,7 @@ void Aras::assignRunways(const std::string& fir)
 
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
+	m_soundPlayer->playSound(Sounds::completionSound);
 	std::cout << "Runway assignment completed in " << elapsed_seconds.count() << " seconds." << std::endl;
 
 }
