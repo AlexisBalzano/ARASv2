@@ -22,15 +22,12 @@ public:
 };
 
 inline void SoundPlayer::playSound(const std::string& filePath) {
-	if (PlaySoundA(filePath.c_str(), NULL, SND_FILENAME | SND_ASYNC)) {
-		std::cout << "Playing sound: " << filePath << std::endl;
-	} else {
+	if (!PlaySoundA(filePath.c_str(), NULL, SND_FILENAME | SND_ASYNC)) {
 		std::cerr << "Failed to play sound: " << filePath << std::endl;
 	}
 }
 
 inline void SoundPlayer::stopAllSounds()
 {
-	std::cout << "Stopping all sounds." << std::endl;
 	PlaySoundA(NULL, NULL, SND_PURGE | SND_ASYNC);
 }
