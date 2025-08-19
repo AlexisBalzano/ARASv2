@@ -13,8 +13,7 @@
                 "arrival": "22R",
                 "departure": "22L"
             }
-        },
-        "ICAO":"LFMN"
+        }
     },
     "LFKJ": {
         "runways":{
@@ -30,8 +29,7 @@
                 "arrival": "02",
                 "departure": "20"
             }
-        },
-        "ICAO":"LFKJ"
+        }
     },
     "LFML": {
         "runways":{
@@ -47,8 +45,7 @@
                 "arrival": "13L",
                 "departure": "13R"
             }
-        },
-        "ICAO":"LFML"
+        }
     },
     "LFLL": {
         "runways":{
@@ -64,8 +61,7 @@
                 "arrival": "17L",
                 "departure": "17R"
             }
-        },
-        "ICAO":"LFLL"
+        }
     },
     "LFMT": {
         "runways":{
@@ -81,8 +77,7 @@
                 "arrival": "12L",
                 "departure": "12L"
             }
-        },
-        "ICAO":"LFMT"
+        }
     },
     "LFKF": {
         "runways":{
@@ -98,8 +93,7 @@
                 "arrival": "23",
                 "departure": "23"
             }
-        },
-        "ICAO":"LFKF"
+        }
     },
     "LFKB": {
         "runways":{
@@ -115,8 +109,7 @@
                 "arrival": "16",
                 "departure": "16"
             }
-        },
-        "ICAO":"LFKB"
+        }
     },
     "LFMP": {
         "runways":{
@@ -132,8 +125,7 @@
                 "arrival": "15",
                 "departure": "15"
             }
-        },
-        "ICAO":"LFMP"
+        }
     },
     "LFQQ": {
         "runways":{
@@ -149,8 +141,7 @@
                 "arrival": "08",
                 "departure": "08"
             }
-        },
-        "ICAO":"LFQQ"
+        }
     },
     "LFOB": {
         "runways":{
@@ -166,8 +157,7 @@
                 "arrival": "12",
                 "departure": "12"
             }
-        },
-        "ICAO":"LFOB"
+        }
     },
     "LFPO": {
         "runways":{
@@ -183,8 +173,7 @@
                 "arrival": "25",
                 "departure": "24"
             }
-        },
-        "ICAO":"LFPO"
+        }
     },
     "LFPB": {
         "runways":{
@@ -200,8 +189,7 @@
                 "arrival": "07",
                 "departure": "09"
             }
-        },
-        "ICAO":"LFPB"
+        }
     },
     "LFBO": {
         "runways":{
@@ -217,8 +205,7 @@
                 "arrival": "14R",
                 "departure": "14L"
             }
-        },
-        "ICAO":"LFBO"
+        }
     },
     "LFBD": {
         "runways":{
@@ -234,8 +221,7 @@
                 "arrival": "05",
                 "departure": "05"
             }
-        },
-        "ICAO":"LFBD"
+        }
     },
     "LFBZ": {
         "runways":{
@@ -251,8 +237,7 @@
                 "arrival": "09",
                 "departure": "09"
             }
-        },
-        "ICAO":"LFBZ"
+        }
     },
     "LFBH": {
         "runways":{
@@ -268,36 +253,27 @@
                 "arrival": "09",
                 "departure": "09"
             }
-        },
-        "ICAO":"LFBH"
+        }
     },
     "LFPG": {
+		"has4runways": true,
         "runways":{
             "1":{
                 "heading": 260,
                 "preferential": 0,
                 "arrival": "26L",
-                "departure": "26R"
+                "departure": "26R",
+				"arrivalBis": "27R",
+                "departureBis": "27L"
             },
             "2":{
-                "heading": 80,
+				"heading": 80,
                 "preferential": 0,
                 "arrival": "08R",
-                "departure": "08L"
-            },
-            "3":{
-                "heading": 270,
-                "preferential": 0,
-                "arrival": "27R",
-                "departure": "27L"
-            },
-            "4":{
-                "heading": 90,
-                "preferential": 0,
-                "arrival": "09L",
-                "departure": "09R"
+                "departure": "08L",
+                "arrivalBis": "09L",
+                "departureBis": "09R"
             }
-        },
-        "ICAO":"LFPG"
+        }
     }
 }
