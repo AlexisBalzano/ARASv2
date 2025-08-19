@@ -6,6 +6,16 @@
 #include "DataManager.h"
 #include "SoundSystem.h"
 
+struct RunwayData {
+	std::string airport;
+	bool has4rwys = false;
+	std::string depRunway;
+	std::string arrRunway;
+	std::string depRunwayBis;
+	std::string arrRunwayBis;
+	int heading = 0;
+	int preferential = 0;
+};
 
 class Aras {
 public:
@@ -36,6 +46,10 @@ public:
 	void updateAirportsList(std::string fir, std::string airports);
 	void saveRwyLocation(const std::filesystem::path path);
 	void addFIR(const std::string& fir);
+
+	RunwayData assignAirportRunway(const std::string& airport, const WindData& windData);
+	std::vector<std::string> formatRunwayOutput(const RunwayData& runwayData);
+	std::vector<std::string> formatActiveAirport(const std::string& airport);
 
 private:
 	std::unique_ptr<DataManager> m_dataManager;

@@ -7,6 +7,8 @@
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include <httplib.h>
 
+struct RunwayData;
+
 struct WindData {
 	int windDirection;
 	int windSpeed;
@@ -37,11 +39,14 @@ public:
 	std::string getToken() const { return m_token; }
 	std::filesystem::path getRwyFilePath() const { return m_rwyFilePath; }
 	std::future<WindData> getWindData(const std::string& oaci);
+	std::vector<std::future<WindData>> getWindData(const std::vector<std::string>& airports);
+	std::vector<RunwayData> getAirportRunwaysData(const std::string& airport);
 	
 private:
 	std::filesystem::path m_configPath;
+	std::filesystem::path m_rwyFilePath;
 
 	nlohmann::json m_configJson;
+	nlohmann::json m_rwyDataJson;
 	std::string m_token;
-	std::filesystem::path m_rwyFilePath;
 };

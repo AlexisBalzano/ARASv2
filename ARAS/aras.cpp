@@ -99,21 +99,25 @@ void Aras::assignRunways(const std::string& fir)
 		return;
 	}
 
-	std::vector<std::future<WindData>> windDataFutureList;
-	for (const auto& airport : airports) {
-		windDataFutureList.emplace_back(m_dataManager->getWindData(airport));
-	}
+	std::vector<std::string> runwayText;
+	std::vector<std::future<WindData>> windDataFutureList = m_dataManager->getWindData(airports);
 	
 	for (size_t i = 0; i < airports.size(); ++i) {
 		std::cout << "Processing airport: " << airports[i] << std::endl;
 		WindData windData = windDataFutureList[i].get(); // Wait for wind data to be ready
 		if (windData.windDirection == -1 || windData.windSpeed == -1) {
 			std::cout << "Invalid wind data for airport: " << airports[i] << std::endl;
-			continue; // Skip this airport
+			continue;
 		}
-		// process runway assignment logic here
-		std::cout << "Wind data for " << airports[i] << ": " << "Direction: " << windData.windDirection << ", Speed: " << windData.windSpeed << ", Gust: " << windData.windGust << std::endl;
+
+		std::vector<std::string> activeAirportStrings = formatActiveAirport(airports[i]);
+		runwayText.insert(runwayText.end(), activeAirportStrings.begin(), activeAirportStrings.end());
+
+		std::vector<std::string> assignedRunwayStrings = formatRunwayOutput(assignAirportRunway(airports[i], windData));
+		runwayText.insert(runwayText.end(), assignedRunwayStrings.begin(), assignedRunwayStrings.end());
 	}
+
+	m_dataManager->outputRunways(runwayText);
 
 	m_soundPlayer->playSound(SoundPlayer::completionSound);
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
@@ -162,4 +166,35 @@ void Aras::saveRwyLocation(const std::filesystem::path path)
 void Aras::addFIR(const std::string& fir)
 {
 	m_dataManager->addFIRconfig(fir);
+}
+
+RunwayData Aras::assignAirportRunway(const std::string& airport, const WindData& windData)
+{
+	std::vector<RunwayData> runwaysData = m_dataManager->getAirportRunwaysData(airport);
+
+	//TODO: Calculate the best runway based on wind data
+	size_t i = 0;
+	return runwaysData[i]; // Return selected runway's RunwayData
+}
+
+std::vector<std::string> Aras::formatRunwayOutput(const RunwayData& runwaysData)
+{
+	std::string standardOutput = "ACTIVE_RUNWAY:" + runwaysData.airport + ":";
+	std::vector<std::string> output;
+
+	output.emplace_back(standardOutput + runwaysData.depRunway + ":1");
+	output.emplace_back(standardOutput + runwaysData.arrRunway + ":0");
+
+	if (runwaysData.has4rwys) {
+		output.emplace_back(standardOutput + runwaysData.depRunwayBis + ":1");
+		output.emplace_back(standardOutput + runwaysData.arrRunwayBis + ":0");
+	}
+
+	return output;
+}
+
+std::vector<std::string> Aras::formatActiveAirport(const std::string& airport)
+{
+	std::string activeAirportText = "ACTIVE_AIRPORT:" + airport + ":";
+	return std::vector<std::string>{activeAirportText + "1", activeAirportText + "0"};
 }

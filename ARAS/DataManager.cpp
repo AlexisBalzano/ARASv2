@@ -14,8 +14,9 @@
 #elif defined(__APPLE__) || defined(__linux__)
 #include <dlfcn.h>
 #include <cstdlib>
-#include "Aras.h"
 #endif
+
+#include "Aras.h"
 
 static std::string trim(const std::string& s) {
 	auto start = s.begin();
@@ -63,7 +64,6 @@ std::filesystem::path DataManager::getConfigPath()
 
 bool DataManager::parseConfigFile()
 {
-
 	std::ifstream configFile(m_configPath / "config.json");
 	if (!configFile.is_open()) {
 		std::cout << "Failed to open config file." << std::endl;
@@ -78,10 +78,24 @@ bool DataManager::parseConfigFile()
 				m_rwyFilePath = m_configJson["outputPath"].get<std::filesystem::path>();
 			}
 		}
-		return true;
 	}
 	catch (const std::exception& e) {
 		std::cout << "Error parsing config file: " << e.what() << std::endl;
+		return false;
+	}
+
+	std::ifstream rwyDataFile(m_configPath / "rwydata.json");
+	if (!rwyDataFile.is_open()) {
+		std::cout << "Failed to open rwyData file." << std::endl;
+		return false;
+	}
+	try {
+		rwyDataFile >> m_rwyDataJson;
+		rwyDataFile.close();
+		return true;
+	}
+	catch (const std::exception& e) {
+		std::cout << "Error parsing rwyData file: " << e.what() << std::endl;
 		return false;
 	}
 }
@@ -145,6 +159,7 @@ bool DataManager::outputRunways(const std::vector<std::string> runways)
 				std::cout << "Empty runway name found, skipping." << std::endl;
 				continue;
 			}
+			rwyFile << runway + "\n";
 		}
 		rwyFile.close();
 		std::cout << "Runway file written successfully." << std::endl;
@@ -290,4 +305,50 @@ std::future<WindData> DataManager::getWindData(const std::string& oaci)
 		}
 		return WindData{ -1, -1, -1 }; // Return invalid values if request fails
 	});
+}
+
+std::vector<std::future<WindData>> DataManager::getWindData(const std::vector<std::string>& airports)
+{
+	std::vector<std::future<WindData>> windDataFutures;
+	for (const auto& airport : airports) {
+		if (!airport.empty()) {
+			windDataFutures.push_back(getWindData(airport));
+		}
+	}
+	return windDataFutures;
+}
+
+std::vector<RunwayData> DataManager::getAirportRunwaysData(const std::string& airport)
+{
+	std::vector<RunwayData> runwaysData;
+	RunwayData runwayData;
+	runwayData.airport = airport;
+
+	if (m_rwyDataJson[airport].contains("has4runways")) {
+		runwayData.has4rwys = true;
+	}
+
+	auto iterator = m_rwyDataJson[airport]["runways"].begin();
+	while (iterator != m_rwyDataJson[airport]["runways"].end()) {
+		std::string variant = iterator.key();
+		nlohmann::json rwydataJson = m_rwyDataJson[airport]["runways"][variant];
+
+		runwayData.depRunway = rwydataJson["departure"];
+		runwayData.arrRunway = rwydataJson["arrival"];
+		runwayData.heading = rwydataJson["heading"];
+		runwayData.preferential = rwydataJson["preferential"];
+		if (runwayData.has4rwys) {
+			runwayData.depRunwayBis = rwydataJson["departureBis"];
+			runwayData.arrRunwayBis = rwydataJson["arrivalBis"];
+		}
+		else {
+			runwayData.depRunwayBis = "";
+			runwayData.arrRunwayBis = "";
+		}
+		runwaysData.push_back(runwayData);
+		
+		++iterator;
+	}
+
+	return runwaysData;
 }
