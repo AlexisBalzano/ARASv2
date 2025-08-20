@@ -170,11 +170,20 @@ void Aras::addFIR(const std::string& fir)
 
 RunwayData Aras::assignAirportRunway(const std::string& airport, const WindData& windData)
 {
+	constexpr double PI = 3.14159265358979323846;
 	std::vector<RunwayData> runwaysData = m_dataManager->getAirportRunwaysData(airport);
 
-	//TODO: Calculate the best runway based on wind data
-	size_t i = 0;
-	return runwaysData[i]; // Return selected runway's RunwayData
+	int alpha = std::abs(windData.windDirection - runwaysData[0].heading);
+	if (alpha > 180) alpha = 360 - alpha;
+
+	double tailWindComponent = windData.windSpeed * std::cos(alpha * PI / 180.0) < 0 ? windData.windSpeed * std::cos(alpha * PI / 180.0) : 0;
+
+	if (tailWindComponent < -runwaysData[0].preferential) { // Assume that the preferential runway is always the first one in the json
+		return runwaysData[1];
+	}
+	else {
+		return runwaysData[0];
+	}
 }
 
 std::vector<std::string> Aras::formatRunwayOutput(const RunwayData& runwaysData)
