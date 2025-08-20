@@ -283,9 +283,11 @@ std::future<WindData> DataManager::getWindData(const std::string& oaci)
 		auto res = cli.Get(apiEndpoint + oaci, headers);
 		if (res) {
 			if (res->status == 200) {
-				m_configJson["tokenValidity"] = true;
-				if (!outputConfig()) {
-					std::cerr << "Failed to update token validity in config file." << std::endl;
+				if (!m_configJson["tokenValidity"].get<bool>()) {
+					m_configJson["tokenValidity"] = true;
+					if (!outputConfig()) {
+						std::cerr << "Failed to update token validity in config file." << std::endl;
+					}
 				}
 
 				nlohmann::json responseJson;
