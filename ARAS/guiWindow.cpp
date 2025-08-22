@@ -114,6 +114,14 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 #endif
 		});
 	m_gui.add(m_minimiseButton);
+
+	// Version Text
+	m_versionText = tgui::Label::create("v" + m_aras->getVersion());
+	float textWidth = m_versionText->getSize().x;
+	m_versionText->setPosition({ static_cast<float>(m_width) - textWidth - 5, static_cast<float>(m_height) - 30 });
+	m_versionText->getRenderer()->setTextColor(sf::Color::White);
+	m_versionText->setTextSize(12);
+	m_gui.add(m_versionText);
 }
 
 std::optional<sf::Event> GuiWindow::pollWindowEvent()

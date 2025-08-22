@@ -64,6 +64,7 @@ protected:
 	tgui::CanvasSFML::Ptr backgroundCanvas;
 	tgui::Button::Ptr m_closeButton;
 	tgui::Button::Ptr m_minimiseButton;
+	tgui::Label::Ptr m_versionText;
 	std::vector <std::unique_ptr<sf::Drawable>> m_drawables;
 	sf::Texture iconTexture;
 	sf::Image m_icon;
