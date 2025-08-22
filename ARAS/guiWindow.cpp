@@ -324,6 +324,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_tokenEntry->setPasswordCharacter('*');
 	m_tokenEntry->setTextSize(20);
 	m_tokenEntry->getRenderer()->setRoundedBorderRadius(10);
+	m_tokenEntry->getRenderer()->setBorderColor(Colors::DarkGrey);
 	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
 	m_tokenEntry->onReturnOrUnfocus([this] {
 		std::string token = m_tokenEntry->getText().toStdString();
@@ -367,6 +368,8 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_firSelector->setSelectedItemByIndex(0);
 	m_firSelector->addItem("Add FIR");
 	m_firSelector->getRenderer()->setRoundedBorderRadius(10);
+	m_firSelector->getRenderer()->setBorderColor(Colors::DarkGrey);
+	m_firSelector->getRenderer()->setArrowColorHover(Colors::DarkGrey);
 	m_firSelector->setMouseCursor(tgui::Cursor::Type::Hand);
 	m_firSelector->setChangeItemOnScroll(true);
 	m_firSelector->setExpandDirection(tgui::ComboBox::ExpandDirection::Down);
@@ -421,6 +424,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	}
 	m_airportList->setTextSize(20);
 	m_airportList->getRenderer()->setRoundedBorderRadius(10);
+	m_airportList->getRenderer()->setBorderColor(Colors::DarkGrey);
 	m_airportList->setMouseCursor(tgui::Cursor::Type::Text);
 	m_airportList->onReturnOrUnfocus([this] {
 		m_aras->updateAirportsList(m_firSelector->getSelectedItem().toStdString(), m_airportList->getText().toStdString());
@@ -474,7 +478,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	arasButtonColors.text = tgui::Color::White;
 	arasButtonColors.backgroundHover = Colors::Yellow;
 	arasButtonColors.textHover = tgui::Color::Black;
-	m_rwyLocationButton = createButton("Choose .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
+	m_rwyLocationButton = createButton("Select .rwy location", { m_width * 0.2f, m_height * 0.85f }, { 165, 30 }, arasButtonColors);
 	if (!m_aras->getRwyFilePath().empty()) {
 		m_rwyLocationButton->setText(".rwy Location Set");
 		m_rwyLocationButton->getRenderer()->setBackgroundColor(Colors::Green);
@@ -487,7 +491,7 @@ void GuiMainWindow::createMainWindowWidgets()
 
 
 	// Runway Assign Button
-	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
+	m_rwyAssignButton = createButton("Assign runways", { m_width * 0.35f, m_height * 0.85f }, { 165, 30 }, arasButtonColors);
 	m_rwyAssignButton->onClick([this] {
 		m_aras->assignRunways(m_firSelector->getSelectedItem().toStdString());
 		if (m_aras->getTokenValidity()) setTokenStatusVerified();
@@ -504,7 +508,7 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_row5->getRenderer()->setPadding({ 20, 0, 20, 0 });
 
 	// Settings Button
-	m_settingsButton = createButton("Settings", { m_width * 0.5f, m_height * 0.85f }, { 150, 30 }, arasButtonColors);
+	m_settingsButton = createButton("Settings", { m_width * 0.5f, m_height * 0.85f }, { 165, 30 }, arasButtonColors);
 	m_settingsButton->onClick([this] {
 		m_aras->openSettings();
 	});
