@@ -6,7 +6,7 @@
 #include "DataManager.h"
 #include "SoundSystem.h"
 
-constexpr const char* ARAS_VERSION = "v1.0.2";
+constexpr const char* ARAS_VERSION = "v1.0.1";
 
 struct RunwayData {
 	std::string airport;
@@ -38,8 +38,10 @@ public:
 	std::string getTokenConfig() const { return m_dataManager->getToken(); }
 	bool getTokenValidity() const { return m_dataManager->isTokenValid(); }
 
+	bool newVersionAvailable(std::string& setupUrl, std::string& msiUrl);
 	bool isRwyFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "rwydata.json"); }
 	bool isConfigFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "config.json"); }
+	bool downloadInstaller(std::ofstream& out, const std::string& url);
 
 	void assignRunways(const std::string& fir);
 	void openSettings();
@@ -48,6 +50,8 @@ public:
 	void updateAirportsList(std::string fir, std::string airports);
 	void saveRwyLocation(const std::filesystem::path path);
 	void addFIR(const std::string& fir);
+	void downloadFiles(const std::string& setupUrl, const std::string& msiUrl);
+	void launchInstaller();
 
 	RunwayData assignAirportRunway(const std::string& airport, const WindData& windData);
 	std::vector<std::string> formatRunwayOutput(const RunwayData& runwayData);
@@ -59,7 +63,11 @@ private:
 	std::thread m_renderThread;
 	bool m_stop = false;
 
+	std::string m_setupUrl;
+	std::string m_msiUrl;
+	bool m_newVersion = false;
+
 	std::vector<std::unique_ptr<GuiWindow>> m_windows;
 	std::vector<std::unique_ptr<GuiWindow>> newWindows;
-	
+	std::unique_ptr<GuiLoadingWindow> m_loadingWindow;
 };
