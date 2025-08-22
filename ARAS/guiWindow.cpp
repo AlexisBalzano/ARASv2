@@ -1,8 +1,8 @@
 #include "GuiWindow.h"
 #include "Aras.h"
 
-GuiWindow::GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
-	: m_width(width), m_height(height), m_title(title), m_aras(aras)
+GuiWindow::GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls)
+	: m_width(width), m_height(height), m_title(title), m_aras(aras), m_hideControls(hideControls)
 #ifdef _WIN32
 	, m_dragging(false), m_hwnd(nullptr), m_clickOffset{ 0, 0 }
 #endif
@@ -87,6 +87,17 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 	titleText.setPosition({ static_cast<float>(m_width / 2), static_cast<float>(dragAreaHeight / 2) });
 	m_drawables.push_back(std::move(std::make_unique<sf::Text>(titleText)));
 
+	// Version Text
+	m_versionText = tgui::Label::create(ARAS_VERSION);
+	float textWidth = m_versionText->getSize().x;
+	m_versionText->setPosition({ static_cast<float>(m_width) - textWidth - 5, static_cast<float>(m_height) - 30 });
+	m_versionText->getRenderer()->setTextColor(sf::Color::White);
+	m_versionText->setTextSize(12);
+	m_gui.add(m_versionText);
+
+	if (m_hideControls)
+		return;
+
 	// Close Button
 	ButtonColors closeButtonColors;
 	closeButtonColors.backgroundHover = tgui::Color::Red;
@@ -114,14 +125,6 @@ void GuiWindow::createBaseWindowLayout(const std::string& title)
 #endif
 		});
 	m_gui.add(m_minimiseButton);
-
-	// Version Text
-	m_versionText = tgui::Label::create(ARAS_VERSION);
-	float textWidth = m_versionText->getSize().x;
-	m_versionText->setPosition({ static_cast<float>(m_width) - textWidth - 5, static_cast<float>(m_height) - 30 });
-	m_versionText->getRenderer()->setTextColor(sf::Color::White);
-	m_versionText->setTextSize(12);
-	m_gui.add(m_versionText);
 }
 
 std::optional<sf::Event> GuiWindow::pollWindowEvent()
@@ -217,8 +220,8 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 }
 
 
-GuiMainWindow::GuiMainWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
-	: GuiWindow(width, height, title, aras) {}
+GuiMainWindow::GuiMainWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls)
+	: GuiWindow(width, height, title, aras, hideControls) {}
 
 bool GuiMainWindow::createWindow()
 {
@@ -606,8 +609,8 @@ void GuiMainWindow::setConfStatusNotFound()
 	m_confStatusText->getRenderer()->setTextColor(tgui::Color::Red);
 }
 
-GuiSettingWindow::GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras)
-	: GuiWindow(width, height, title, aras) {}
+GuiSettingWindow::GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls)
+	: GuiWindow(width, height, title, aras, hideControls) {}
 
 bool GuiSettingWindow::createWindow()
 {
@@ -651,3 +654,72 @@ void GuiSettingWindow::createSettingsWindowWidgets()
 	
 	m_gui.add(m_verticalLayout);
 }
+
+GuiLoadingWindow::GuiLoadingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls)
+	: GuiWindow(width, height, title, aras, hideControls) {}
+
+bool GuiLoadingWindow::createWindow()
+{
+	sf::ContextSettings settings;
+	settings.antiAliasingLevel = 8;
+	m_window.create(sf::VideoMode({ m_width, m_height }), m_title, sf::Style::None, sf::State::Windowed, settings);
+	if (!m_window.isOpen())
+		return false;
+	m_window.setFramerateLimit(60);
+	m_gui.setTarget(m_window);
+	m_hwnd = m_window.getNativeHandle();
+
+#ifdef _WIN32
+	// Set the window to be transparent
+	SetWindowLong(m_hwnd, GWL_EXSTYLE, GetWindowLong(m_hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+	SetLayeredWindowAttributes(m_hwnd, RGB(sf::Color::Transparent.r, sf::Color::Transparent.g, sf::Color::Transparent.b), 0, LWA_COLORKEY);
+#endif
+
+	loadDependencies();
+	createBaseWindowLayout("Updating");
+	createLoadingWindowWidgets();
+
+	return true;
+}
+
+void GuiLoadingWindow::createLoadingWindowWidgets()
+{
+	// Dark Rectangle background
+	RoundedRectangle rect({ static_cast<float>(m_width), static_cast<float>(m_height) - 30 }, 10);
+	rect.setFillColor(Colors::Grey);
+	rect.setOrigin(rect.getLocalBounds().getCenter());
+	rect.setPosition({ static_cast<float>(m_width) / 2, static_cast<float>(m_height) / 2 + 15 });
+	backgroundCanvas->draw(rect);
+
+	// Download Text
+	m_downloadText = tgui::Label::create("Downloading: ");
+	m_downloadText->setTextSize(20);
+	m_downloadText->setPosition({ m_width * 0.1f, m_height / 2 - 20 });
+	m_downloadText->getRenderer()->setTextColor(tgui::Color::White);
+	m_gui.add(m_downloadText);
+
+	// Progress Bar
+	m_progressBar = tgui::ProgressBar::create();
+	m_progressBar->setSize({ m_width * 0.8f, 30 });
+	m_progressBar->setPosition({ m_width * 0.1f, m_height / 2 + 15 });
+	m_progressBar->setValue(0);
+	m_progressBar->getRenderer()->setBorderColor(Colors::DarkGrey);
+	m_progressBar->getRenderer()->setFillColor(Colors::Blue);
+	m_progressBar->getRenderer()->setBackgroundColor(Colors::LightGrey);
+
+	m_gui.add(m_progressBar);
+}
+
+void GuiLoadingWindow::setProgress(float percent)
+{
+	if (percent < 0.f) percent = 0.f;
+	if (percent > 100.f) percent = 100.f;
+	m_progressBar->setValue(static_cast<unsigned int>(percent));
+	m_progressBar->setText(std::to_string(static_cast<int>(percent)) + "%");
+}
+
+void GuiLoadingWindow::setText(const std::string& text)
+{
+	m_downloadText->setText("Downloading: " + text);
+}
+

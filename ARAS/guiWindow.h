@@ -27,7 +27,7 @@ struct ButtonColors {
 
 class GuiWindow {
 public:
-	GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras);
+	GuiWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls=false);
 	~GuiWindow();
 
 	GuiWindow(const GuiWindow&) = delete;
@@ -69,6 +69,7 @@ protected:
 	sf::Texture iconTexture;
 	sf::Image m_icon;
 	sf::Font m_font;
+	bool m_hideControls = false;
 
 #ifdef _WIN32
 	HWND m_hwnd = nullptr;
@@ -80,7 +81,7 @@ protected:
 
 class GuiMainWindow : public GuiWindow {
 public:
-	GuiMainWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras);
+	GuiMainWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls=false);
 	
 	bool createWindow() override;
 	void createMainWindowWidgets();
@@ -127,10 +128,24 @@ private:
 
 class GuiSettingWindow : public GuiWindow {
 public:
-	GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras);
+	GuiSettingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls = false);
 	bool createWindow() override;
 	void createSettingsWindowWidgets();
 
 private:
 	tgui::VerticalLayout::Ptr m_verticalLayout;
+};
+
+class GuiLoadingWindow : public GuiWindow {
+public:
+	GuiLoadingWindow(unsigned int width, unsigned int height, const std::string& title, Aras* aras, bool hideControls = true);
+	bool createWindow() override;
+	void createLoadingWindowWidgets();
+
+	void setProgress(float percent);
+	void setText(const std::string& text);
+
+private:
+	tgui::Label::Ptr m_downloadText;
+	tgui::ProgressBar::Ptr m_progressBar;
 };
