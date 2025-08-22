@@ -189,7 +189,8 @@
                 "arrival": "07",
                 "departure": "09"
             }
-        }
+        },
+		"connected": ["LFPG"]
     },
     "LFBO": {
         "runways":{
