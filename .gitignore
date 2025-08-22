@@ -8,3 +8,5 @@ x64/Debug/ARAS.pdb
 x64/Release/ARAS.pdb
 x64/Debug/ARAS.exe
 x64/Release/ARAS.exe
+x64/Release/ARAS-Installer.exe
+x64/Release/ARAS_log.txt
