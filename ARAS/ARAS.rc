@@ -13,7 +13,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Version
 //
 
- VERSIONINFO
+VS_VERSION_INFO VERSIONINFO
  FILEVERSION 1,0,0,0
  PRODUCTVERSION 1,0,0,0
  FILEFLAGSMASK 0x3fL
@@ -32,11 +32,11 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Alexis Balzano"
             VALUE "FileDescription", "Automatic Runway Assignement System"
-            VALUE "FileVersion", "1.0.0"
+            VALUE "FileVersion", "1.0.0.0"
             VALUE "InternalName", "ARAS"
             VALUE "OriginalFilename", "ARAS.exe"
             VALUE "ProductName", "ARAS"
-            VALUE "ProductVersion", "1.0.0"
+            VALUE "ProductVersion", "1.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
