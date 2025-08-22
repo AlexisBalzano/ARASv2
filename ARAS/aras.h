@@ -6,7 +6,7 @@
 #include "DataManager.h"
 #include "SoundSystem.h"
 
-constexpr const char* ARAS_VERSION = "v1.0.0";
+constexpr const char* ARAS_VERSION = "v1.0.2";
 
 struct RunwayData {
 	std::string airport;

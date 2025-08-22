@@ -8,8 +8,8 @@
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 1,0,2,0
+ PRODUCTVERSION 1,0,2,0
  FILEFLAGSMASK 0x3fL
  FILEFLAGS 0x0L
  FILEOS 0x4L
@@ -22,11 +22,11 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Alexis Balzano"
             VALUE "FileDescription", "Automatic Runway Assignement System"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "1.0.2.0"
             VALUE "InternalName", "ARAS"
             VALUE "OriginalFilename", "ARAS.exe"
             VALUE "ProductName", "ARAS"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "1.0.2.0"
         END
     END
     BLOCK "VarFileInfo"
