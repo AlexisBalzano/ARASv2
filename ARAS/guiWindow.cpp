@@ -326,8 +326,11 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_tokenEntry->getRenderer()->setRoundedBorderRadius(10);
 	m_tokenEntry->setMouseCursor(tgui::Cursor::Type::Text);
 	m_tokenEntry->onReturnOrUnfocus([this] {
-		m_aras->saveToken(m_tokenEntry->getText().toStdString());
-		setTokenStatusSet();
+		std::string token = m_tokenEntry->getText().toStdString();
+		if (!token.empty()) {
+			m_aras->saveToken(token);
+			setTokenStatusSet();
+		}
 		});
 	m_row2->add(m_tokenEntry);
 	m_verticalLayout->add(m_row2);
