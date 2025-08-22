@@ -1,6 +1,9 @@
 .vs/
 ARAS/x64/
 ARAS/Debug/
+ARAS/ARAS-Installer.exe
+ARAS/ARAS.APS
+ARAS/ARAS_log.txt
 x64/Debug/ARAS.pdb
 x64/Release/ARAS.pdb
 x64/Debug/ARAS.exe
