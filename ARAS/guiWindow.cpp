@@ -214,6 +214,7 @@ tgui::Button::Ptr GuiWindow::createButton(const std::string& buttonText, tgui::V
 	button->getRenderer()->setBackgroundColorHover(colors.backgroundHover);
 	button->getRenderer()->setBackgroundColorDown(colors.backgroundDown);
 	button->getRenderer()->setBorders({ 0, 0, 0, 0 });
+	button->getRenderer()->setBorderColor(Colors::DarkGrey);
 	button->getRenderer()->setRoundedBorderRadius(10);
 	button->setMouseCursor(tgui::Cursor::Type::Hand);
 	return button;
@@ -475,6 +476,10 @@ void GuiMainWindow::createMainWindowWidgets()
 	m_fileDialog->setFileTypeFilters({ {".rwy", {"*.rwy"}}, {"All files", {}} }, 1);
 	m_fileDialog->setSize({ m_width * 0.7f, m_height * 0.6f });
 	m_fileDialog->setPosition({ m_width * 0.15f, m_height * 0.2f });
+	m_fileDialog->getRenderer()->setBorderColor(Colors::DarkGrey);
+	m_fileDialog->getRenderer()->setBorderColorFocused(Colors::DarkGrey);
+	m_fileDialog->getRenderer()->setTitleBarColor(Colors::LightGrey);
+	m_fileDialog->getRenderer()->setTitleColor(tgui::Color::White);
 	m_fileDialog->onFileSelect([this](const tgui::Filesystem::Path& path) {
 		m_aras->saveRwyLocation(path);
 		m_fileDialog->setPath(path.getParentPath());
