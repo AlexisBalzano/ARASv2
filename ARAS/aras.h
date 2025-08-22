@@ -6,7 +6,7 @@
 #include "DataManager.h"
 #include "SoundSystem.h"
 
-#define ARAS_VERSION "1.0.1"
+constexpr const char* ARAS_VERSION = "v1.0.0";
 
 struct RunwayData {
 	std::string airport;
@@ -37,7 +37,6 @@ public:
 	std::filesystem::path getRwyFilePath() const { return m_dataManager->getRwyFilePath(); }
 	std::string getTokenConfig() const { return m_dataManager->getToken(); }
 	bool getTokenValidity() const { return m_dataManager->isTokenValid(); }
-	std::string getVersion() const { return ARAS_VERSION; }
 
 	bool isRwyFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "rwydata.json"); }
 	bool isConfigFileFound() const { return std::filesystem::exists(m_dataManager->getConfigPath() / "config.json"); }
