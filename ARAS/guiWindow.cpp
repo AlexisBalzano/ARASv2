@@ -392,7 +392,7 @@ void GuiMainWindow::createMainWindowWidgets()
 			m_addFIRInput->getRenderer()->setRoundedBorderRadius(10);
 			m_addFIRInput->setSize({ 100, 40 });
 			m_addFIRInput->setTextSize(20);
-			m_addFIRInput->setPosition({ 225, 300 });
+			m_addFIRInput->setPosition({ 240, 300 });
 			m_gui.add(m_addFIRInput);
 			m_addFIRInput->onReturnOrUnfocus([this]() {
 				std::string firName = m_addFIRInput->getText().toStdString();
