@@ -127,7 +127,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\External\SFML-3.0.0\include;$(SolutionDir)\External\TGUI\include;$(SolutionDir)\External\nlohmann\include;$(SolutionDir)\External\httplib\include;C:\OpenSSL-Win64\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\External\SFML-3.0.0\lib;$(SolutionDir)\External\TGUI\lib;C:\OpenSSL-Win64\lib\VC\x64\MT;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;tgui.lib;libssl.lib;libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -144,11 +144,15 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="GuiWindow.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RoundedRectangle.h" />
     <ClInclude Include="soundSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ARAS.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ressources\images\icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
