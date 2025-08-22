@@ -170,6 +170,7 @@ void Aras::addFIR(const std::string& fir)
 
 RunwayData Aras::assignAirportRunway(const std::string& airport, const WindData& windData)
 {
+	// Add connected airports logic
 	constexpr double PI = 3.14159265358979323846;
 	std::vector<RunwayData> runwaysData = m_dataManager->getAirportRunwaysData(airport);
 
